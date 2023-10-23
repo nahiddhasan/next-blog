@@ -13,6 +13,15 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 const Categories = () => {
   const catRef = useRef();
 
+  const handleClick = (type) => {
+    if (type === "left") {
+      catRef.scrollLeft -= 150;
+      console.log("lclick");
+    } else {
+      catRef.scrollRight += 150;
+      console.log("rclick");
+    }
+  };
   return (
     <div className="flex gap-4 w-[700px] overflow-x-auto text-white">
       {/* <Swiper
@@ -28,12 +37,12 @@ const Categories = () => {
           </SwiperSlide>
         ))}
       </Swiper> */}
-      <span>
-        <AiOutlineLeft className="p-2 rounded-full text-zinc-900 text-2xl bg-white" />
+      <span onClick={() => handleClick("left")}>
+        <AiOutlineLeft className="p-2 rounded-full text-zinc-900 text-2xl bg-white cursor-pointer" />
       </span>
       <ul
         ref={catRef}
-        className={`${styles.categories} list flex gap-4 overflow-x-scroll no-scrollbar bg-gray-300 px-3 py-1 rounded-md`}
+        className={`${styles.categories} scroll-smooth select-none cursor-grab list flex gap-4 overflow-x-scroll no-scrollbar bg-gray-300 px-3 py-1 rounded-md`}
       >
         <li>1</li>
         <li>2</li>
@@ -68,8 +77,8 @@ const Categories = () => {
         <li>7</li>
         <li>7</li>
       </ul>
-      <span>
-        <AiOutlineRight className="p-2 rounded-full text-zinc-900 text-2xl bg-white" />
+      <span onClick={() => handleClick("right")}>
+        <AiOutlineRight className="p-2 rounded-full text-zinc-900 text-2xl bg-white cursor-pointer" />
       </span>
     </div>
   );
