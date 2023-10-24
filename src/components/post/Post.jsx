@@ -5,7 +5,7 @@ import UserActions from "./UserActions";
 
 const Post = () => {
   return (
-    <div className="flex odd:flex-row-reverse text-white gap-4 ring-1 ring-zinc-800 p-2 rounded-sm mb-6 hover:shadow-md shadow-zinc-500">
+    <div className="flex even:flex-row-reverse text-white gap-4 ring-1 ring-zinc-800 p-2 rounded-sm mb-6 hover:shadow-md shadow-zinc-500">
       <div className="flex flex-col gap-2">
         {/* user info */}
         <User />

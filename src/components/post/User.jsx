@@ -5,12 +5,12 @@ const User = () => {
     <div className="flex items-center gap-2">
       <Image
         src={"/img/avatar.png"}
-        height={40}
-        width={40}
-        className="object-cover cursor-pointer"
+        height={30}
+        width={30}
+        className="object-cover cursor-pointer rounded-full"
         alt="userimg"
       />
-      <span className="text-lg cursor-pointer">John Doe</span>
+      <span className="cursor-pointer font-semibold">John Doe</span>
     </div>
   );
 };

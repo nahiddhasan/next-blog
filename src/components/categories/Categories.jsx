@@ -1,84 +1,69 @@
 "use client";
 
 import { styles } from "@/app/styles";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-// import "swiper/css";
-// import "swiper/css/navigation";
 
-// import { FreeMode, Navigation } from "swiper/modules";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { categories } from "../../../data";
+import Link from "next/link";
+import { categories } from "../../../data";
 
 const Categories = () => {
   const catRef = useRef();
-
   const handleClick = (type) => {
     if (type === "left") {
-      catRef.scrollLeft -= 150;
-      console.log("lclick");
+      catRef.current.scrollLeft -= 150;
     } else {
-      catRef.scrollRight += 150;
-      console.log("rclick");
+      catRef.current.scrollLeft += 150;
     }
   };
+  let isDragging = false;
+  let startX;
+  let scrollLeft;
+  const dragstart = (e) => {
+    isDragging = true;
+    e.preventDefault();
+    startX = e.pageX || e.touches[0].pageX - catRef.current.offsetLeft;
+    scrollLeft = catRef.current.scrollLeft;
+  };
+  const dragging = (e) => {
+    if (!isDragging) return;
+    const x = e.pageX || e.touches[0].pageX - catRef.current.offsetLeft;
+    const dist = x - startX;
+    catRef.current.scrollLeft = scrollLeft - dist;
+  };
+  const draggingStop = () => {
+    isDragging = false;
+  };
+
+  useEffect(() => {
+    catRef.current.addEventListener("mousedown", dragstart);
+    catRef.current.addEventListener("touchstart", dragstart);
+    catRef.current.addEventListener("touchmove", dragging);
+    catRef.current.addEventListener("mousemove", dragging);
+    document.addEventListener("mouseup", draggingStop);
+  }, []);
+
   return (
-    <div className="flex gap-4 w-[700px] overflow-x-auto text-white">
-      {/* <Swiper
-        modules={[Navigation, FreeMode]}
-        freeMode={true}
-        loop={true}
-        navigation={true}
-        slidesPerView={5}
-      >
-        {categories.map((categorie) => (
-          <SwiperSlide key={categorie}>
-            <span className={`px-2 p-1 rounded-full`}>{categorie}</span>
-          </SwiperSlide>
-        ))}
-      </Swiper> */}
+    <div className="flex items-center gap-4 w-full bg-zinc-900 p-12 px-20">
       <span onClick={() => handleClick("left")}>
-        <AiOutlineLeft className="p-2 rounded-full text-zinc-900 text-2xl bg-white cursor-pointer" />
+        <AiOutlineLeft className="p-2 rounded-full text-2xl bg-zinc-700 text-white cursor-pointer" />
       </span>
-      <ul
+      <div
         ref={catRef}
-        className={`${styles.categories} scroll-smooth select-none cursor-grab list flex gap-4 overflow-x-scroll no-scrollbar bg-gray-300 px-3 py-1 rounded-md`}
+        className={`${styles.categories} scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
       >
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
-        <li>6</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-        <li>7</li>
-      </ul>
+        {categories.map((item) => (
+          <Link
+            href={`/${item.path}`}
+            key={item}
+            className="cursor-pointer px-3 p-1 rounded-full"
+          >
+            {item.title}
+          </Link>
+        ))}
+      </div>
       <span onClick={() => handleClick("right")}>
-        <AiOutlineRight className="p-2 rounded-full text-zinc-900 text-2xl bg-white cursor-pointer" />
+        <AiOutlineRight className="p-2 rounded-full text-2xl bg-zinc-700 text-white cursor-pointer" />
       </span>
     </div>
   );
