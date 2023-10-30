@@ -58,7 +58,7 @@ export const categories = [
     },
    {
         title: "Education", 
-        path: "gardening"
+        path: "education"
     },
    { 
         title:"Relationships", 

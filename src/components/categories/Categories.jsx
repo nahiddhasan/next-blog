@@ -1,7 +1,7 @@
 "use client";
 
 import { styles } from "@/app/styles";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
 import Link from "next/link";
@@ -27,21 +27,13 @@ const Categories = () => {
   };
   const dragging = (e) => {
     if (!isDragging) return;
-    const x = e.pageX || e.touches[0].pageX - catRef.current.offsetLeft;
+    const x = e.pageX || e.touches[0].pageX - catRef.current.offsetLeft * 10;
     const dist = x - startX;
     catRef.current.scrollLeft = scrollLeft - dist;
   };
   const draggingStop = () => {
     isDragging = false;
   };
-
-  useEffect(() => {
-    catRef.current.addEventListener("mousedown", dragstart);
-    catRef.current.addEventListener("touchstart", dragstart);
-    catRef.current.addEventListener("touchmove", dragging);
-    catRef.current.addEventListener("mousemove", dragging);
-    document.addEventListener("mouseup", draggingStop);
-  }, []);
 
   return (
     <div className="flex items-center gap-4 w-full bg-zinc-900 p-12 px-20">
@@ -50,6 +42,11 @@ const Categories = () => {
       </span>
       <div
         ref={catRef}
+        onMouseDown={dragstart}
+        onMouseMove={dragging}
+        onMouseUp={draggingStop}
+        onTouchStart={dragstart}
+        onTouchMove={dragging}
         className={`${styles.categories} scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
       >
         {categories.map((item) => (

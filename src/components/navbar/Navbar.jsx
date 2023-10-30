@@ -1,3 +1,4 @@
+import { getAuthSession } from "@/utills/auth";
 import Link from "next/link";
 import { BsPencilSquare } from "react-icons/bs";
 import { FaBlogger } from "react-icons/fa";
@@ -6,11 +7,11 @@ import MobileNav from "./MobileNav";
 import Profile from "./Profile";
 import Search from "./Search";
 
-const Navbar = () => {
-  const user = false;
+const Navbar = async () => {
+  const session = await getAuthSession();
   return (
     <div className="z-10 sticky top-0 bg-zinc-900 border-b border-zinc-700">
-      <div className="h-12 max-w-[1366px] flex items-center m-auto px-4 justify-between">
+      <div className="h-12 max-w-[1366px] flex items-center m-auto px-4 justify-between bord">
         {/* logo */}
         <Link
           href={"/"}
@@ -25,18 +26,18 @@ const Navbar = () => {
         <Search />
         {/* Menu item */}
         {/* mobile menu */}
-        <MobileNav user={user} />
+        <MobileNav user={session?.user} />
         {/* desktop nav */}
         <div className="text-white items-center gap-3 hidden lg:flex flex-1 justify-end">
           <Link
             className="text-zinc-400 hover:text-zinc-50 transition-all flex items-center gap-3 "
-            href={user ? "write" : "login"}
+            href={session?.user ? "/write" : "/login"}
           >
             <BsPencilSquare className="text-lg" />
             Write
           </Link>
           <IoIosNotificationsOutline className="text-2xl text-zinc-400 hover:text-zinc-50 cursor-pointer" />
-          <Profile user={user} />
+          <Profile user={session?.user} />
         </div>
       </div>
     </div>

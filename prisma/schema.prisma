@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid()) @map("_id")
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid()) @map("_id")
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid()) @map("_id")
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  username         String?  @unique
+  bio              String?
+  coverImg         String?
+  followingids     String?
+  hasNotifications Boolean?
+
+  posts         Post[]
+  comments      Comment[]
+  notifications Notifications[]
+}
+
+model VerificationToken {
+  identifier String   @id @map("_id")
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Post {
+  id        String    @id @default(cuid()) @map("_id")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String
+  des       String
+  img       String
+  userEmail String
+  likeIds   String[]
+  user      User      @relation(fields: [userEmail], references: [email])
+  comments  Comment[]
+  category  Category  @relation(fields: [catSlug], references: [slug])
+  catSlug   String
+  views     Int       @default(0)
+}
+
+model Comment {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  body      String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userEmail String
+  user      User     @relation(fields: [userEmail], references: [email])
+}
+
+model Category {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  title     String
+  slug      String   @unique
+  post      Post[]
+}
+
+model Notifications {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  body      String
+  userEmail String
+  user      User     @relation(fields: [userEmail], references: [email])
+}

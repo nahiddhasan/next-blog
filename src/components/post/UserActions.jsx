@@ -1,14 +1,14 @@
 import { AiOutlineEye } from "react-icons/ai";
-const UserActions = () => {
+const UserActions = ({ cat, views, createdAt }) => {
   return (
     <div className="flex gap-4 text-white">
-      <span>Jaune 15</span>
+      <span>{createdAt}</span>
       <span className="px-2 rounded-full bg-zinc-700 cursor-pointer">
-        Music
+        {cat}
       </span>
       <span className="flex items-center gap-1">
         <AiOutlineEye className="text-white text-xl" />
-        1k
+        {views}
       </span>
     </div>
   );

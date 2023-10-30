@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -35,8 +36,8 @@ const Profile = ({ user }) => {
       {user ? (
         <div className="relative">
           <Image
-            onClick={() => setOpen(!open)}
-            src={"/img/avatar.png"}
+            onClick={() => setOpen((prev) => !prev)}
+            src={user.image || "/img/avatar.png"}
             height={30}
             width={30}
             alt="Profile"
@@ -46,20 +47,20 @@ const Profile = ({ user }) => {
             <>
               <div
                 ref={profileRef}
-                className={` absolute  z-10 p-4 top-12  right-2  h-max  w-[250px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
+                className={` absolute  z-10 p-4 top-12  right-2  h-max  w-[300px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
               >
                 {/* user info */}
                 <div className="flex items-center gap-4 mb-4">
                   <Image
-                    src={"/img/avatar.png"}
+                    src={user.image || "/img/avatar.png"}
                     height={40}
                     width={40}
                     alt="Profile"
                     className="object-cover rounded-full ring-1 ring-yellow-400/20 hover:ring-yellow-400/75 cursor-pointer"
                   />
                   <div className="flex flex-col">
-                    <span className="cursor-pointer">John Doe</span>
-                    <span className="text-zinc-400">john@email.com</span>
+                    <span className="cursor-pointer">{user.name}</span>
+                    <span className="text-zinc-400 text-xs">{user.email}</span>
                   </div>
                 </div>
                 <div className="flex flex-col text-zinc-400 gap-2">
@@ -88,7 +89,9 @@ const Profile = ({ user }) => {
                   </span>
                 </div>
                 <hr className="my-4 border-b border-zinc-700" />
-                <span className="cursor-pointer my-2">Logout</span>
+                <span onClick={() => signOut()} className="cursor-pointer my-2">
+                  Logout
+                </span>
               </div>
             </>
           )}
@@ -100,7 +103,7 @@ const Profile = ({ user }) => {
           </Link>
           <Link
             href="/login"
-            className="bg-yellow-400 hover:bg-yellow-300 text-black p-1 px-4 rounded-full"
+            className="bg-gradient-to-r from-yellow-400 to-red-500  text-zinc-700 p-1 px-4 rounded-full"
           >
             Get Started
           </Link>

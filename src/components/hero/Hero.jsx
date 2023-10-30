@@ -31,15 +31,15 @@ const Hero = () => {
             }}
             className="bg-cover bg-no-repeat"
           >
-            <div className="h-full flex-1 flex justify-center px-20 bg-gradient-to-t from-zinc-900 to-transparent">
+            <div className="h-full flex-1 flex justify-center px-20 bg-gradient-to-b from-transparent to-zinc-900/70">
               <div className="flex-1 flex items-start justify-center flex-col gap-4 ">
-                <h1 className="text-white font-bold text-[80px] leading-[80px] bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
+                <h1 className="font-bold text-[80px] leading-[80px] bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
                   {item.title}
                 </h1>
                 <p className="text-white text-2xl">{item.desc}</p>
                 <Link
                   href="/"
-                  className="bg-yellow-400 hover:bg-yellow-300 text-black p-2 px-4 rounded-full"
+                  className="bg-gradient-to-r from-yellow-400 to-red-500  text-zinc-700 p-2 px-4 rounded-full"
                 >
                   Start Reading
                 </Link>
