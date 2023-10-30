@@ -15,15 +15,20 @@ const getData = async () => {
 
 const MainPage = async () => {
   const posts = await getData();
+
   return (
     <div className=" max-w-[1366px] relative h-full">
       <Hero />
       <Categories />
       <div className="flex w-full p-4 gap-4 bg-zinc-900">
         <section className="flex-[3]">
-          {posts.map((item) => (
-            <Post key={item.id} post={item} user={item.user} />
-          ))}
+          {posts.length ? (
+            posts.map((item) => (
+              <Post key={item.id} post={item} user={item.user} />
+            ))
+          ) : (
+            <span>No Post Found</span>
+          )}
         </section>
         <aside className="flex-[1]">
           <Sidebar />

@@ -72,9 +72,9 @@ model Post {
   title     String
   des       String
   img       String
-  userEmail String
+  userId    String
   likeIds   String[]
-  user      User      @relation(fields: [userEmail], references: [email])
+  user      User      @relation(fields: [userId], references: [id])
   comments  Comment[]
   category  Category  @relation(fields: [catSlug], references: [slug])
   catSlug   String

@@ -1,17 +1,13 @@
 "use client";
+import Loader from "@/components/loader/Loader";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { BiLoader } from "react-icons/bi";
 
 const Login = () => {
   const router = useRouter();
   const { status } = useSession();
   if (status === "loading") {
-    return (
-      <div className="h-[80vh] flex items-center justify-center">
-        <BiLoader size={100} className="animate-spin" />
-      </div>
-    );
+    return <Loader />;
   }
   if (status === "authenticated") {
     router.push("/");
