@@ -1,34 +1,38 @@
 import User from "@/components/user/User";
 import Content from "./_components/Content";
 import UserActions from "./_components/UserActions";
+const getData = async (id) => {
+  const res = await fetch(`http://localhost:3000/api/posts/${id}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    return "Something went wrong";
+  }
+  return res.json();
+};
 
-const SinglePost = () => {
+const SinglePost = async ({ params }) => {
+  const { id } = params;
+  const post = await getData(id);
   return (
     <div className="text-white max-w-[1000px] mx-auto mt-6">
       {/* title */}
       <div className="py-6">
-        <h1 className="text-5xl font-bold mb-3">
-          Let’s Stop Calling It “Content”
-        </h1>
-        <h3 className="text-2xl text-zinc-400">
-          Hollywood and tech firms want to reduce culture to a slurry of
-          interchangeable bits. Let’s not help them out
-        </h3>
+        <h1 className="text-5xl font-bold mb-3">{post.title}</h1>
+        <h3 className="text-2xl text-zinc-400">{post.des.substring(0, 120)}</h3>
       </div>
       {/* author */}
       <User
-        userId={123}
-        img={"/img/avatar.png"}
-        name={"John Doe"}
-        bio={"this is bio "}
-        createdAt={"12 jan"}
+        userId={post.user?.id}
+        img={post.user?.image || "/img/avatar.png"}
+        name={post.user?.name}
+        bio={post.user?.bio}
+        createdAt={post?.createdAt}
       />
-      {/* useractions */}
-      <UserActions />
       {/* content */}
-      <Content />
+      <Content img={post.img} desc={post.des} />
       {/* useractions */}
-      <UserActions />
+      <UserActions postId={post.id} />
     </div>
   );
 };

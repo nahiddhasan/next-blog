@@ -1,4 +1,5 @@
 "use client";
+import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -30,7 +31,9 @@ const User = ({ img, name, bio, userId, createdAt }) => {
             {name}
           </Link>
           {createdAt && (
-            <span className="text-zinc-400 text-sm">{createdAt}</span>
+            <span className="text-zinc-400 text-sm">
+              {moment(createdAt).fromNow()}
+            </span>
           )}
         </div>
       </div>

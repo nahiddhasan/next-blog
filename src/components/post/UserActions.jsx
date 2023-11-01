@@ -1,8 +1,9 @@
+import moment from "moment";
 import { AiOutlineEye } from "react-icons/ai";
 const UserActions = ({ cat, views, createdAt }) => {
   return (
     <div className="flex gap-4 text-white">
-      <span>{createdAt}</span>
+      <span>{moment(createdAt).fromNow()}</span>
       <span className="px-2 rounded-full bg-zinc-700 cursor-pointer">
         {cat}
       </span>

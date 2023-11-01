@@ -1,12 +1,36 @@
 "use client";
+import fetcher from "@/utills/fetcher";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
+import useSWR from "swr";
 import CommentList from "./CommentList";
-const Comments = ({ commentOpen, setCommentOpen }) => {
-  const user = true;
+
+const Comments = ({ commentOpen, setCommentOpen, postId }) => {
   const commentRef = useRef();
+  const [body, setBody] = useState("");
+
+  const { data: session, status } = useSession();
+
+  const {
+    data: comments,
+    mutate,
+    isLoading,
+  } = useSWR(`http://localhost:3000/api/comments?postId=${postId}`, fetcher);
+
+  const handleComment = async () => {
+    if (!body) {
+      return;
+    }
+    await fetch("http://localhost:3000/api/comments", {
+      method: "POST",
+      body: JSON.stringify({ body, postId }),
+    });
+    setBody("");
+    mutate();
+  };
 
   const handleClickOutside = (e) => {
     if (!commentRef.current.contains(e.target)) {
@@ -35,7 +59,9 @@ const Comments = ({ commentOpen, setCommentOpen }) => {
     >
       {/* top part  */}
       <div className="flex items-center justify-between">
-        <span className="text-lg font-semibold">Total Comments (250)</span>
+        <span className="text-lg font-semibold">
+          Total Comments ({comments?.length})
+        </span>
         <RxCrossCircled
           onClick={() => setCommentOpen(false)}
           className="text-2xl hover:text-zinc-200 cursor-pointer"
@@ -44,26 +70,33 @@ const Comments = ({ commentOpen, setCommentOpen }) => {
       {/* comments section */}
       <div>
         {/* comment input  */}
-        {user ? (
+        {status === "authenticated" ? (
           <div className="w-full my-4 p-3 bg-zinc-700 rounded-md">
             {/* user  */}
             <div className="flex items-center gap-2">
               <Image
-                src={"/img/avatar.png"}
+                src={session.user.image || "/img/avatar.png"}
                 height={30}
                 width={30}
                 className="object-cover cursor-pointer rounded-full"
                 alt="userimg"
               />
               <div className="flex flex-col">
-                <span className="cursor-pointer font-semibold">John Doe</span>
+                <span className="cursor-pointer font-semibold">
+                  {session.user.name}
+                </span>
               </div>
             </div>
             <textarea
               className="w-full bg-transparent text-sm outline-none"
               placeholder="What are You Thoughts?"
+              onChange={(e) => setBody(e.target.value)}
+              value={body}
             />
-            <button className="rounded-full px-3 p-1 bg-zinc-900 hover:bg-zinc-800 text-sm text-white">
+            <button
+              onClick={handleComment}
+              className="rounded-full px-3 p-1 bg-zinc-900 hover:bg-zinc-800 text-sm text-white"
+            >
               Comment
             </button>
           </div>
@@ -78,10 +111,11 @@ const Comments = ({ commentOpen, setCommentOpen }) => {
           </div>
         )}
         {/* comment list */}
-        <CommentList />
-        <CommentList />
-        <CommentList />
-        <CommentList />
+        {isLoading
+          ? "Loading..."
+          : comments.map((comment) => (
+              <CommentList key={comment.id} comment={comment} />
+            ))}
       </div>
     </div>
   );

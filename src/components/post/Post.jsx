@@ -20,7 +20,7 @@ const Post = ({ post, user }) => {
         {/* content */}
         <Link href={`/singlepost/${post?.id}`} className="flex gap-2 flex-col">
           <h2 className="text-xl font-bold">{post?.title}</h2>
-          <p className="text-zinc-300">{post?.des}</p>
+          <p className="text-zinc-300">{post?.des.substring(0,120)}</p>
         </Link>
         {/* details */}
         <UserActions

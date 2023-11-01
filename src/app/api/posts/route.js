@@ -20,7 +20,6 @@ export const GET=async(req)=>{
                 where:filters,
                 include: {
                     user: true,
-                    comments: true
                 },
                 orderBy: {
                     createdAt: 'desc'

@@ -46,12 +46,14 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  username         String?  @unique
+  username         String?
   bio              String?
   coverImg         String?
   followingids     String?
+  followedids      String?
   hasNotifications Boolean?
 
+  likes         Like[]
   posts         Post[]
   comments      Comment[]
   notifications Notifications[]
@@ -73,7 +75,7 @@ model Post {
   des       String
   img       String
   userId    String
-  likeIds   String[]
+  likes     Like[]
   user      User      @relation(fields: [userId], references: [id])
   comments  Comment[]
   category  Category  @relation(fields: [catSlug], references: [slug])
@@ -105,4 +107,13 @@ model Notifications {
   body      String
   userEmail String
   user      User     @relation(fields: [userEmail], references: [email])
+}
+
+model Like {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
 }
