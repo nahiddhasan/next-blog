@@ -1,5 +1,6 @@
 import prisma from "@/utills/connect";
 import { NextResponse } from "next/server";
+
 export const GET =async(req,{params})=>{
     const {id} = params;
     try {
@@ -9,9 +10,12 @@ export const GET =async(req,{params})=>{
             },
             data: { views: { increment: 1 } },
             include: {
-                user: true,
-                comments: true
-            },
+                user:true,
+                _count: {
+                  select: { comments: true },
+                },
+              
+              },
            
         })
         return new NextResponse(JSON.stringify(post,{status:200}))

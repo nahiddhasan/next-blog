@@ -10,7 +10,7 @@ import { sliders } from "../../../data";
 
 const Hero = () => {
   return (
-    <div className="h-[calc(90vh-48px)] bg-yellow-300">
+    <div className="h-[calc(90vh-48px)]">
       <Swiper
         className="h-full w-full"
         modules={[Pagination, Autoplay, EffectFade]}

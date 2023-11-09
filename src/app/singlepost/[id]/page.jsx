@@ -14,6 +14,7 @@ const getData = async (id) => {
 const SinglePost = async ({ params }) => {
   const { id } = params;
   const post = await getData(id);
+
   return (
     <div className="text-white max-w-[1000px] mx-auto mt-6">
       {/* title */}
@@ -32,7 +33,7 @@ const SinglePost = async ({ params }) => {
       {/* content */}
       <Content img={post.img} desc={post.des} />
       {/* useractions */}
-      <UserActions postId={post.id} />
+      <UserActions postId={post.id} commentsCount={post._count.comments} />
     </div>
   );
 };

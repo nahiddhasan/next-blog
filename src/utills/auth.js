@@ -13,9 +13,25 @@ export const authOptions = {
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      }),
-        
+      }), 
     ],
+    callbacks: {
+      async session({ token, session }) {
+        if (token) {
+          session.user.id = token.id;
+        }
+        return session;
+      },
+      async jwt({ token }) {
+        const userInDb = await prisma.user.findUnique({
+          where: {
+            email: token.email,
+          },
+        });
+        token.id = userInDb?.id;
+        return token;
+      },
+    },
  
     pages: {
       signIn: "/login",

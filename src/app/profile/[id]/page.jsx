@@ -1,29 +1,122 @@
 "use client";
+import Input from "@/components/input/Input";
 import Loader from "@/components/loader/Loader";
+import Modal from "@/components/modal/Modal";
 import Post from "@/components/post/Post";
 import fetcher from "@/utills/fetcher";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import useSWR from "swr";
+import FollowActions from "../_components/FollowActions";
 const tabs = ["Home", "About"];
 
 const Profile = ({ params }) => {
+  const { data: session, status } = useSession();
   const { id } = params;
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [cover, setCover] = useState("");
+  const [errorMessege, setErrorMessege] = useState("");
+  const [error, setError] = useState(false);
+  const [submiting, setSubmiting] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const { data: user, isLoading } = useSWR(
-    `http://localhost:3000/api/user/${id}`,
+  const {
+    data: user,
+    isLoading,
+    mutate,
+  } = useSWR(`http://localhost:3000/api/user/${id}`, fetcher);
+
+  const { data: follow, mutate: followMutate } = useSWR(
+    `http://localhost:3000/api/follow?followingId=${id}`,
     fetcher
   );
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!isLoading) {
+      setName(user.name);
+      setBio(user.bio);
+    }
+  }, [isLoading]);
+
+  const handleError = (name) => {
+    if (!name) {
+      setError(true);
+      setErrorMessege("Name Required");
+    } else if (name.length < 3) {
+      setError(true);
+      setErrorMessege("Name Must be greater than 2 character");
+    } else {
+      setError(false);
+    }
+  };
+
+  const handleUpdate = async () => {
+    handleError(name);
+    if (error) {
+      return;
+    }
+    setSubmiting(true);
+
+    await fetch(`http://localhost:3000/api/user/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        name,
+        bio,
+      }),
+    });
+    mutate();
+    setModalOpen(false);
+    setSubmiting(false);
+  };
+
+  if (isLoading || status === "loading") {
     return <Loader />;
   }
+
+  const updateProfile = () => {
+    return (
+      <>
+        <Input
+          label="Name*"
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          error={error}
+          errorMessege={errorMessege}
+          reqired={true}
+        />
+        <Input
+          label="Bio"
+          type="text"
+          placeholder="bio"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+        />
+      </>
+    );
+  };
 
   return (
     <div className="flex px-4 gap-4 my-12 max-w-[1366px] mx-auto">
       {/* left content  */}
       <div className=" flex-[3] ring-1 ring-zinc-800 p-4 text-white">
+        {modalOpen && (
+          <Modal
+            name={user.name}
+            bio={user.bio}
+            image={user.image}
+            body={updateProfile()}
+            onSubmit={handleUpdate}
+            onClose={() => setModalOpen(false)}
+            disabled={submiting}
+          />
+        )}
         <div className="w-full">
           <div className="relative w-full h-[200px]">
             {user?.cover && (
@@ -78,10 +171,23 @@ const Profile = ({ params }) => {
           />
           <span>{user?.name}</span>
           <div className="flex items-center gap-6 mb-4">
-            <span>2.5k Followers</span>
-            <button className="px-3 rounded-full bg-blue-700 hover:bg-blue-600">
-              Follow
-            </button>
+            <span>{follow?.followings} Followers</span>
+            {session?.user?.email === user.email ? (
+              <button
+                onClick={() => setModalOpen(true)}
+                className="px-3 rounded-full bg-blue-700 hover:bg-blue-600"
+              >
+                Edit
+              </button>
+            ) : (
+              <Link href={!session?.user ? "/login" : ""}>
+                <FollowActions
+                  mutateFn={followMutate}
+                  isFollowing={!!follow?.isFollowing}
+                  id={id}
+                />
+              </Link>
+            )}
           </div>
           <p>{user?.bio}</p>
         </div>

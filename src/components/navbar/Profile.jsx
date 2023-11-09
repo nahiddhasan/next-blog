@@ -50,7 +50,10 @@ const Profile = ({ user }) => {
                 className={` absolute  z-10 p-4 top-12  right-2  h-max  w-[300px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
               >
                 {/* user info */}
-                <div className="flex items-center gap-4 mb-4">
+                <Link
+                  href={`profile/${user.id}`}
+                  className="flex items-center gap-4 mb-4"
+                >
                   <Image
                     src={user.image || "/img/avatar.png"}
                     height={40}
@@ -62,7 +65,7 @@ const Profile = ({ user }) => {
                     <span className="cursor-pointer">{user.name}</span>
                     <span className="text-zinc-400 text-xs">{user.email}</span>
                   </div>
-                </div>
+                </Link>
                 <div className="flex flex-col text-zinc-400 gap-2">
                   <span className="hover:text-zinc-50 cursor-pointer flex items-center gap-2">
                     <BiSolidDashboard className="text-xl" />

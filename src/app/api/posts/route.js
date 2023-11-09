@@ -5,11 +5,9 @@ export const GET=async(req)=>{
 
     const {searchParams} = new URL(req.url)
     const cat = searchParams.get("cat")
-    const userId = searchParams.get("userId")
-    const search = searchParams.get("search")
+    const search = searchParams.get("q")
     const filters = {
         ...(cat && { catSlug:cat}),
-        ...(userId && { userId:userId}),
         ...(search && { title: {contains: search,mode:"insensitive"} }),
       };
 

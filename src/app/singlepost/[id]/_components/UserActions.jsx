@@ -1,23 +1,31 @@
 "use client";
+import fetcher from "@/utills/fetcher";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
+import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { FiMoreHorizontal } from "react-icons/fi";
-import { SlLike } from "react-icons/sl";
+import useSWR from "swr";
 import Comments from "./Comments";
-const UserActions = ({ postId }) => {
+const UserActions = ({ postId, commentsCount }) => {
   const [commentOpen, setCommentOpen] = useState(false);
+  const { data: session } = useSession();
+  const { data, mutate, isLoading } = useSWR(
+    `http://localhost:3000/api/like?postId=${postId}`,
+    fetcher
+  );
 
-  const {
-    data: likes,
-    mutate,
-    isLoading,
-  } = useSWR(`http://localhost:3000/api/likes?postId=${postId}`, fetcher);
-
-  console.log(likes);
-  const handleLike = async () => {
-    await fetch("http://localhost:3000/api/comments", {
-      method: "POST",
-    });
+  const handleLike = async (type) => {
+    if (type === "like") {
+      await fetch(`http://localhost:3000/api/follow?followingId=${id}`, {
+        method: "POST",
+      });
+    } else {
+      await fetch(`http://localhost:3000/api/unfollow?followingId=${id}`, {
+        method: "DELETE",
+      });
+    }
 
     mutate();
   };
@@ -25,17 +33,22 @@ const UserActions = ({ postId }) => {
   return (
     <div className="flex items-center justify-between p-4 my-6">
       <div className="flex gap-3">
-        <span
-          onClick={handleLike}
-          className="flex items-center gap-1 cursor-pointer text-lg"
-        >
-          <SlLike /> {likes.length || 0}
-        </span>
+        <Link href={!session?.user ? "/login" : ""}>
+          <span className="flex items-center gap-1 cursor-pointer text-lg">
+            {!!data?.isLiked ? (
+              <AiFillLike onClick={() => handleLike("unlike")} />
+            ) : (
+              <AiOutlineLike onClick={() => handleLike("like")} />
+            )}{" "}
+            {data?.likes}
+          </span>
+        </Link>
+
         <span
           onClick={() => setCommentOpen(!commentOpen)}
           className="flex items-center gap-1 cursor-pointer text-lg"
         >
-          <FaRegComment />
+          <FaRegComment /> {commentsCount}
         </span>
       </div>
       <div>

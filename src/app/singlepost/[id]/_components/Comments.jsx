@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
+import ReactTextareaAutosize from "react-textarea-autosize";
 import useSWR from "swr";
 import CommentList from "./CommentList";
 
@@ -75,7 +76,7 @@ const Comments = ({ commentOpen, setCommentOpen, postId }) => {
             {/* user  */}
             <div className="flex items-center gap-2">
               <Image
-                src={session.user.image || "/img/avatar.png"}
+                src={session?.user.image || "/img/avatar.png"}
                 height={30}
                 width={30}
                 className="object-cover cursor-pointer rounded-full"
@@ -83,16 +84,17 @@ const Comments = ({ commentOpen, setCommentOpen, postId }) => {
               />
               <div className="flex flex-col">
                 <span className="cursor-pointer font-semibold">
-                  {session.user.name}
+                  {session?.user.name}
                 </span>
               </div>
             </div>
-            <textarea
-              className="w-full bg-transparent text-sm outline-none"
+            <ReactTextareaAutosize
+              className="w-full bg-transparent text-sm outline-none resize-none p-2"
               placeholder="What are You Thoughts?"
               onChange={(e) => setBody(e.target.value)}
               value={body}
             />
+
             <button
               onClick={handleComment}
               className="rounded-full px-3 p-1 bg-zinc-900 hover:bg-zinc-800 text-sm text-white"

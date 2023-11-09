@@ -20,14 +20,14 @@ const Login = () => {
         <div className="flex flex-col gap-4 items-center justify-center">
           <button
             onClick={() => signIn("google")}
-            className="ring-1 ring-zinc-700 rounded-full py-2 w-full"
+            className="ring-1 ring-zinc-700 hover:bg-zinc-700 transition-all rounded-full py-2 w-full"
           >
             Login with google
           </button>
-          <button className="ring-1 ring-zinc-700 rounded-full py-2 w-full">
+          <button className="ring-1 ring-zinc-700 hover:bg-zinc-700 transition-all rounded-full py-2 w-full">
             Login with github
           </button>
-          <button className="ring-1 ring-zinc-700 rounded-full py-2 w-full">
+          <button className="ring-1 ring-zinc-700 hover:bg-zinc-700 transition-all rounded-full py-2 w-full">
             Login with Phone Number
           </button>
         </div>

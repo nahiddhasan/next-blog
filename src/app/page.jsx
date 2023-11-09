@@ -3,8 +3,8 @@ import Hero from "@/components/hero/Hero";
 import Post from "@/components/post/Post";
 import Sidebar from "@/components/sidebar/Sidebar";
 
-const getData = async () => {
-  const res = await fetch(`http://localhost:3000/api/posts`, {
+const getData = async (q) => {
+  const res = await fetch(`http://localhost:3000/api/posts?q=${q}`, {
     cache: "no-store",
   });
   if (!res.ok) {
@@ -13,8 +13,9 @@ const getData = async () => {
   return res.json();
 };
 
-const MainPage = async () => {
-  const posts = await getData();
+const MainPage = async ({ searchParams }) => {
+  const q = searchParams?.q || "";
+  const posts = await getData(q);
 
   return (
     <div className=" max-w-[1366px] relative h-full">
