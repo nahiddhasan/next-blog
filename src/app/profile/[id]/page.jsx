@@ -36,6 +36,8 @@ const Profile = ({ params }) => {
     fetcher
   );
 
+  console.log(user);
+
   useEffect(() => {
     if (!isLoading) {
       setName(user.name);

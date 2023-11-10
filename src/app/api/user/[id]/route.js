@@ -11,7 +11,12 @@ export const GET =async(req,{params})=>{
             },
             include:{
                 posts:true,
-            }
+            },
+            include: {
+                _count: {
+                  select: { Follower: true },
+                },
+              },
         })
         return new NextResponse(JSON.stringify(user,{status:200}))
     } catch (error) {
