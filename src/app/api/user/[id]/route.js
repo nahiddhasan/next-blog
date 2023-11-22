@@ -4,20 +4,32 @@ import { NextResponse } from "next/server";
 
 export const GET =async(req,{params})=>{
     const {id} = params;
+    const {searchParams} = new URL(req.url)
+    const page = searchParams.get("page")
+    const limit = searchParams.get("limit")
+
     try {
         const user = await prisma.User.findUnique({
             where:{
                 id:id
             },
             include:{
-                posts:true,
-            },
-            include: {
                 _count: {
-                  select: { Follower: true },
+                    select: { posts: true },
+                  },
+                posts:{
+                    take:parseInt(limit),
+                    skip: limit * (page-1),
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
                 },
-              },
+                
+            
+            },
+
         })
+
         return new NextResponse(JSON.stringify(user,{status:200}))
     } catch (error) {
         console.log(error)

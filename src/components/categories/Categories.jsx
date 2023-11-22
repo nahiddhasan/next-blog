@@ -1,14 +1,17 @@
 "use client";
 
-import { styles } from "@/app/styles";
 import { useRef } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import Link from "next/link";
-import { categories } from "../../../data";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Categories = () => {
+const Categories = ({ categories }) => {
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
+  const { replace } = useRouter();
+  const params = new URLSearchParams(searchParams);
   const catRef = useRef();
+  //navigate left and right
   const handleClick = (type) => {
     if (type === "left") {
       catRef.current.scrollLeft -= 150;
@@ -35,6 +38,15 @@ const Categories = () => {
     isDragging = false;
   };
 
+  //fetch post based on category
+  const handleCatClick = (cat) => {
+    params.set("cat", cat);
+    replace(`${pathName}?${params}`);
+  };
+  const handleAll = () => {
+    params.delete("cat");
+    replace(`${pathName}?${params}`);
+  };
   return (
     <div className="flex items-center gap-4 w-full bg-zinc-900 p-12 px-20">
       <span onClick={() => handleClick("left")}>
@@ -47,16 +59,22 @@ const Categories = () => {
         onMouseUp={draggingStop}
         onTouchStart={dragstart}
         onTouchMove={dragging}
-        className={`${styles.categories} scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
+        className={`catBg scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
       >
+        <span
+          onClick={handleAll}
+          className="cursor-pointer px-3 p-1 rounded-full"
+        >
+          All
+        </span>
         {categories.map((item) => (
-          <Link
-            href={`/${item.path}`}
+          <span
+            onClick={() => handleCatClick(item.title)}
             key={item}
             className="cursor-pointer px-3 p-1 rounded-full"
           >
             {item.title}
-          </Link>
+          </span>
         ))}
       </div>
       <span onClick={() => handleClick("right")}>

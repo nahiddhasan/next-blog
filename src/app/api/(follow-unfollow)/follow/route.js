@@ -51,12 +51,6 @@ export const GET = async(req)=>{
     const followingId = searchParams.get("followingId");
     const session = await getAuthSession();
     try {
-
-        //TODO: to be checked
-        // if(!session){
-        // return new NextResponse(JSON.stringify({messege:"Not loged in"},{status:200}))  
-        // }
-
        if(session?.user){
 
         const isFollowing = await prisma.Follow.findFirst({

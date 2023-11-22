@@ -4,7 +4,18 @@ import { useCallback } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { BiUpload } from "react-icons/bi";
 
-const Modal = ({ onClose, image, body, onSubmit, disabled }) => {
+const Modal = ({
+  onClose,
+  image,
+  coverImg,
+  body,
+  onSubmit,
+  disabled,
+  profile,
+  setProfile,
+  cover,
+  setCover,
+}) => {
   const handleSubmit = useCallback(() => {
     if (disabled) {
       return;
@@ -19,6 +30,7 @@ const Modal = ({ onClose, image, body, onSubmit, disabled }) => {
           <h1 className="text-2xl">Profile Information</h1>
           <button
             onClick={onClose}
+            // type="submit"
             className="rounded-full hover:bg-zinc-600 h-7 w-7 flex items-center justify-center"
           >
             <AiOutlineClose />
@@ -28,29 +40,50 @@ const Modal = ({ onClose, image, body, onSubmit, disabled }) => {
           <div className="flex items-center justify-between gap-2 py-4">
             <div className="flex items-center gap-2">
               <Image
-                src={image || "/img/avatar.png"}
+                src={
+                  (profile && URL.createObjectURL(profile)) ||
+                  image ||
+                  "/img/avatar.png"
+                }
                 height={120}
                 width={120}
                 alt="avatar"
                 className="object-cover rounded-full"
               />
+              <input
+                type="file"
+                onChange={(e) => setProfile(e.target.files[0])}
+                id="profile"
+                className="hidden"
+              />
               <button className="px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-md">
-                <BiUpload />
+                <label htmlFor="profile" className="cursor-pointer">
+                  <BiUpload />
+                </label>
               </button>
             </div>
             <div className="flex items-center gap-2">
               <Image
-                src={"/img/ss.jpg"}
+                src={
+                  (cover && URL.createObjectURL(cover)) ||
+                  coverImg ||
+                  "/img/ss.jpg"
+                }
                 height={40}
                 width={200}
                 alt="avatar"
                 className="object-cover rounded-md"
               />
-              <button
-                disabled={disabled}
-                className="px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-md"
-              >
-                <BiUpload />
+              <input
+                type="file"
+                onChange={(e) => setCover(e.target.files[0])}
+                id="cover"
+                className="hidden"
+              />
+              <button className="px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-md">
+                <label htmlFor="cover" className="cursor-pointer">
+                  <BiUpload />
+                </label>
               </button>
             </div>
           </div>

@@ -1,31 +1,8 @@
-export const sliders = [
-    {
-        id:1,
-        img:"/img/slide1.jpg",
-        title:"Write,Read And Explore.",
-        desc:"Discover stories, thinking, and expertise from writers on any topic"
-    },
-    {
-        id:2,
-        img:"/img/slide2.jpg",
-        title:"Write Your thoughts.",
-        desc:"Discover stories, thinking, and expertise from writers on any topic"
-    },
-    {
-        id:3,
-        img:"/img/slide3.jpg",
-        title:"Stay curious.",
-        desc:"Discover stories, thinking, and expertise from writers on any topic"
-    },
-
-]
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 
-export const categories = [
-    {
-        title:"Travel",
-        slug:"travel"
-    },
+const categories = [
     {
         title:"Cooking",
         slug:"cooking"
@@ -96,4 +73,19 @@ export const categories = [
         title:"Product" ,
         slug: "product"
     }
-]
+];
+async function main() {
+    const category = await prisma.Category.createMany({
+        data:categories,
+      });
+console.log(category)
+}
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })

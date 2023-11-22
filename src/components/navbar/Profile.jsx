@@ -1,8 +1,9 @@
 "use client";
+import useOutsideClick from "@/hooks/outsideClick";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { BiSolidDashboard } from "react-icons/bi";
 import { BsFillGearFill } from "react-icons/bs";
 import { CgNotes } from "react-icons/cg";
@@ -11,26 +12,10 @@ import { MdOutlineNetworkPing } from "react-icons/md";
 
 const Profile = ({ user }) => {
   const [open, setOpen] = useState(false);
-  const profileRef = useRef();
 
-  const handleClickOutside = (e) => {
-    if (!profileRef.current.contains(e.target)) {
-      setOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
-
+  const refs = useOutsideClick(() => {
+    setOpen(false);
+  });
   return (
     <div className="flex items-center gap-3 ">
       {user ? (
@@ -46,7 +31,7 @@ const Profile = ({ user }) => {
           {open && (
             <>
               <div
-                ref={profileRef}
+                ref={refs}
                 className={` absolute  z-10 p-4 top-12  right-2  h-max  w-[300px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
               >
                 {/* user info */}
@@ -92,7 +77,10 @@ const Profile = ({ user }) => {
                   </span>
                 </div>
                 <hr className="my-4 border-b border-zinc-700" />
-                <span onClick={() => signOut()} className="cursor-pointer my-2">
+                <span
+                  onClick={() => signOut()}
+                  className="cursor-pointer my-2 hover:text-zinc-400 rounded-md"
+                >
                   Logout
                 </span>
               </div>

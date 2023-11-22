@@ -8,7 +8,7 @@ import { useState } from "react";
 import { AiFillCaretLeft } from "react-icons/ai";
 import useSWR from "swr";
 
-const User = ({ img, name, bio, userId, createdAt }) => {
+const User = ({ img, name, bio, userId, createdAt, top }) => {
   const { data: session } = useSession();
   const [tooltip, setTooptip] = useState(false);
 
@@ -63,7 +63,11 @@ const User = ({ img, name, bio, userId, createdAt }) => {
 
       {tooltip && (
         <>
-          <div className="absolute right-0 left-[100%] p-4 w-[250px] bg-zinc-800 rounded-md">
+          <div
+            className={`absolute ${
+              top ? "bottom-[125%] left-0" : "left-[100%] right-0"
+            } p-4 w-[250px] bg-zinc-800 rounded-md`}
+          >
             <div>
               <Link
                 href={`/profile/${userId}`}
@@ -102,7 +106,13 @@ const User = ({ img, name, bio, userId, createdAt }) => {
               </Link>
             </div>
           </div>
-          <AiFillCaretLeft className="absolute right-0 left-[calc(100%-14px)] text-zinc-800 text-xl" />
+          <AiFillCaretLeft
+            className={`absolute ${
+              top
+                ? "-rotate-90 left-[50%] bottom-[calc(125%-14px)]"
+                : "right-0 left-[calc(100%-14px)]"
+            }  text-zinc-800 text-xl`}
+          />
         </>
       )}
     </div>

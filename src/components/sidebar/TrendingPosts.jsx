@@ -10,6 +10,7 @@ const SignlePost = () => {
           img={"/img/avatar.png"}
           name={"John Doe"}
           bio={"this is bio"}
+          top={true}
         />
         <h2 className="text-sm font-semibold">Title goes here</h2>
       </div>

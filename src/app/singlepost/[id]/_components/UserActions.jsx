@@ -8,6 +8,7 @@ import { FaRegComment } from "react-icons/fa";
 import { FiMoreHorizontal } from "react-icons/fi";
 import useSWR from "swr";
 import Comments from "./Comments";
+
 const UserActions = ({ postId, commentsCount }) => {
   const [commentOpen, setCommentOpen] = useState(false);
   const { data: session } = useSession();
@@ -18,11 +19,11 @@ const UserActions = ({ postId, commentsCount }) => {
 
   const handleLike = async (type) => {
     if (type === "like") {
-      await fetch(`http://localhost:3000/api/follow?followingId=${id}`, {
+      await fetch(`http://localhost:3000/api/like?postId=${postId}`, {
         method: "POST",
       });
     } else {
-      await fetch(`http://localhost:3000/api/unfollow?followingId=${id}`, {
+      await fetch(`http://localhost:3000/api/unlike?postId=${postId}`, {
         method: "DELETE",
       });
     }
@@ -36,9 +37,9 @@ const UserActions = ({ postId, commentsCount }) => {
         <Link href={!session?.user ? "/login" : ""}>
           <span className="flex items-center gap-1 cursor-pointer text-lg">
             {!!data?.isLiked ? (
-              <AiFillLike onClick={() => handleLike("unlike")} />
+              <AiFillLike size={22} onClick={() => handleLike("unlike")} />
             ) : (
-              <AiOutlineLike onClick={() => handleLike("like")} />
+              <AiOutlineLike size={22} onClick={() => handleLike("like")} />
             )}{" "}
             {data?.likes}
           </span>

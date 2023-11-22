@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 
 const Login = () => {
   const router = useRouter();
-  const { status } = useSession();
+  const { status, session } = useSession();
+
   if (status === "loading") {
     return <Loader />;
   }
@@ -19,6 +20,7 @@ const Login = () => {
         <h1 className="text-4xl my-10 text-center">Login</h1>
         <div className="flex flex-col gap-4 items-center justify-center">
           <button
+            target="blank"
             onClick={() => signIn("google")}
             className="ring-1 ring-zinc-700 hover:bg-zinc-700 transition-all rounded-full py-2 w-full"
           >

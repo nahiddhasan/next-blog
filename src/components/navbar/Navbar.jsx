@@ -23,7 +23,7 @@ const Navbar = async () => {
           </span>
         </Link>
         {/* search bar */}
-        <Search />
+        <Search placeholder={"Search"} />
         {/* Menu item */}
         {/* mobile menu */}
         <MobileNav user={session?.user} />

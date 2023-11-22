@@ -20,7 +20,11 @@ const SinglePost = async ({ params }) => {
       {/* title */}
       <div className="py-6">
         <h1 className="text-5xl font-bold mb-3">{post.title}</h1>
-        <h3 className="text-2xl text-zinc-400">{post.des.substring(0, 120)}</h3>
+        {/* <h3 className="text-2xl text-zinc-400">{post.des.substring(0, 120)}</h3> */}
+        <div
+          className="my-8 text-zinc-300"
+          dangerouslySetInnerHTML={{ __html: post.des.substring(0, 120) }}
+        />
       </div>
       {/* author */}
       <User
