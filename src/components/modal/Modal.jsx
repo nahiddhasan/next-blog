@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useCallback } from "react";
 import { AiOutlineClose } from "react-icons/ai";
-import { BiUpload } from "react-icons/bi";
+import { MdModeEdit } from "react-icons/md";
 
 const Modal = ({
   onClose,
@@ -25,7 +25,7 @@ const Modal = ({
 
   return (
     <div className="h-screen w-full bg-zinc-800/20 fixed top-0 left-0 z-50 flex items-center justify-center">
-      <div className="h-3/4 w-[550px] bg-zinc-700 rounded-md p-8 overflow-auto">
+      <div className="h-3/4 w-[90%] md:w-[550px] bg-zinc-700 rounded-md p-8 overflow-auto">
         <div className="flex items-center justify-between ">
           <h1 className="text-2xl">Profile Information</h1>
           <button
@@ -37,40 +37,15 @@ const Modal = ({
           </button>
         </div>
         <div>
-          <div className="flex items-center justify-between gap-2 py-4">
-            <div className="flex items-center gap-2">
-              <Image
-                src={
-                  (profile && URL.createObjectURL(profile)) ||
-                  image ||
-                  "/img/avatar.png"
-                }
-                height={120}
-                width={120}
-                alt="avatar"
-                className="object-cover rounded-full"
-              />
-              <input
-                type="file"
-                onChange={(e) => setProfile(e.target.files[0])}
-                id="profile"
-                className="hidden"
-              />
-              <button className="px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-md">
-                <label htmlFor="profile" className="cursor-pointer">
-                  <BiUpload />
-                </label>
-              </button>
-            </div>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between gap-2 py-4 relative">
+            <div className="w-full h-[150px] flex items-center gap-2 relative">
               <Image
                 src={
                   (cover && URL.createObjectURL(cover)) ||
                   coverImg ||
                   "/img/ss.jpg"
                 }
-                height={40}
-                width={200}
+                fill
                 alt="avatar"
                 className="object-cover rounded-md"
               />
@@ -80,11 +55,39 @@ const Modal = ({
                 id="cover"
                 className="hidden"
               />
-              <button className="px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-md">
-                <label htmlFor="cover" className="cursor-pointer">
-                  <BiUpload />
+              <label
+                htmlFor="cover"
+                className="absolute bottom-1 right-1 cursor-pointer px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-full"
+              >
+                <MdModeEdit />
+              </label>
+            </div>
+            <div className="flex items-center gap-2 absolute left-4 -bottom-4">
+              <div className="relative">
+                <Image
+                  src={
+                    (profile && URL.createObjectURL(profile)) ||
+                    image ||
+                    "/img/avatar.png"
+                  }
+                  height={120}
+                  width={120}
+                  alt="avatar"
+                  className="object-cover rounded-full "
+                />
+                <input
+                  type="file"
+                  onChange={(e) => setProfile(e.target.files[0])}
+                  id="profile"
+                  className="hidden"
+                />
+                <label
+                  htmlFor="profile"
+                  className=" absolute right-1 bottom-1 cursor-pointer px-2 p-1 bg-blue-700 hover:bg-blue-600 rounded-full"
+                >
+                  <MdModeEdit />
                 </label>
-              </button>
+              </div>
             </div>
           </div>
           <div className="p-5">{body}</div>

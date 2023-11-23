@@ -16,13 +16,14 @@ const SinglePost = async ({ params }) => {
   const post = await getData(id);
 
   return (
-    <div className="text-white max-w-[1000px] mx-auto mt-6">
+    <div className="text-white max-w-[1000px] min-h-[calc(100vh-48px)] mx-auto mt-6 p-4">
       {/* title */}
-      <div className="py-6">
-        <h1 className="text-5xl font-bold mb-3">{post.title}</h1>
-        {/* <h3 className="text-2xl text-zinc-400">{post.des.substring(0, 120)}</h3> */}
+      <div className="py-3 md:py-6">
+        <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-3">
+          {post.title}
+        </h1>
         <div
-          className="my-8 text-zinc-300"
+          className="my-3 md:my-4 lg:my-8 text-zinc-300"
           dangerouslySetInnerHTML={{ __html: post.des.substring(0, 120) }}
         />
       </div>

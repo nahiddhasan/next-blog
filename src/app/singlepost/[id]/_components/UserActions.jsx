@@ -32,7 +32,7 @@ const UserActions = ({ postId, commentsCount }) => {
   };
 
   return (
-    <div className="flex items-center justify-between p-4 my-6">
+    <div className="flex items-center justify-between p-2 md:p-4 my-3 md:my-6">
       <div className="flex gap-3">
         <Link href={!session?.user ? "/login" : ""}>
           <span className="flex items-center gap-1 cursor-pointer text-lg">

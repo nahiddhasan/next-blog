@@ -26,7 +26,7 @@ const MainPage = async ({ searchParams }) => {
         <section className="flex-[3]">
           <Posts q={q} page={page} cat={cat} />
         </section>
-        <aside className="flex-[1]">
+        <aside className="flex-[1] hidden md:block">
           <Sidebar categories={categories} />
         </aside>
       </div>

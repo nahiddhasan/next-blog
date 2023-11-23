@@ -116,7 +116,7 @@ const Profile = ({ params, searchParams }) => {
   };
 
   return (
-    <div className="flex px-4 gap-4 my-12 max-w-[1366px] mx-auto">
+    <div className="flex px-4 gap-4 my-4 md:my-12 max-w-[1366px] mx-auto">
       {/* left content  */}
       <div className=" flex-[3] ring-1 ring-zinc-800 p-4 text-white">
         {modalOpen && (
@@ -133,8 +133,8 @@ const Profile = ({ params, searchParams }) => {
             disabled={submiting}
           />
         )}
-        <div className="w-full">
-          <div className="relative w-full h-[200px]">
+        <div className="w-full relative">
+          <div className="relative w-full h-[200px] -z-10">
             {user?.coverImg && (
               <Image
                 src={user.coverImg}
@@ -144,7 +144,40 @@ const Profile = ({ params, searchParams }) => {
               />
             )}
           </div>
-          <h1 className="text-4xl font-bold mb-3 p-4">{user?.name}</h1>
+          <h1 className="hidden md:block text-4xl font-bold mb-3 p-4">
+            {user?.name}
+          </h1>
+          {/* mobile profile section  */}
+          <div className=" md:hidden flex flex-col gap-2 items-center mb-6 -mt-16">
+            <Image
+              src={user?.image || "/img/avatar.png"}
+              height={120}
+              width={120}
+              alt="dp"
+              className="object-cover rounded-full"
+            />
+            <h1 className="text-2xl font-bold">{user?.name}</h1>
+            <div className="flex items-center gap-6 mb-4">
+              <span>{follow?.followings} Followers</span>
+              {session?.user?.email === user.email ? (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="px-3 rounded-full bg-blue-700 hover:bg-blue-600"
+                >
+                  Edit
+                </button>
+              ) : (
+                <Link href={!session?.user ? "/login" : ""}>
+                  <FollowActions
+                    mutateFn={followMutate}
+                    isFollowing={!!follow?.isFollowing}
+                    id={id}
+                  />
+                </Link>
+              )}
+            </div>
+            <p>{user?.bio}</p>
+          </div>
         </div>
         <div className="w-full">
           {/* tabs */}
@@ -177,7 +210,7 @@ const Profile = ({ params, searchParams }) => {
         </div>
       </div>
       {/* right content */}
-      <div className="sticky top-12 h-max flex-[2] ring-1 ring-zinc-800 p-4 text-white">
+      <div className="hidden md:block sticky top-12 h-max flex-[2] ring-1 ring-zinc-800 p-4 text-white">
         <div className="flex flex-col gap-2 items-center mb-6">
           <Image
             src={user?.image || "/img/avatar.png"}
@@ -186,7 +219,7 @@ const Profile = ({ params, searchParams }) => {
             alt="dp"
             className="object-cover rounded-full"
           />
-          <span>{user?.name}</span>
+          <h1 className="text-2xl font-bold">{user?.name}</h1>
           <div className="flex items-center gap-6 mb-4">
             <span>{follow?.followings} Followers</span>
             {session?.user?.email === user.email ? (

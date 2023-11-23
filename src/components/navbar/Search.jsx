@@ -19,13 +19,13 @@ const Search = ({ placeholder }) => {
   }, 500);
 
   return (
-    <div className="md:flex flex-1 items-center ring-1 ring-zinc-700 bg-zinc-800 text-zinc-200 rounded-md">
+    <div className="flex flex-1 items-center ring-1 ring-zinc-700 bg-zinc-800 text-zinc-200 rounded-md">
       <FaSearch className="m-2" />
       <input
         type="text"
         placeholder={placeholder}
         onChange={handleChange}
-        className={` md:block border-none outline-none bg-transparent  placeholder:text-zinc-300 p-2 py-1`}
+        className={`border-none outline-none bg-transparent  placeholder:text-zinc-300 p-2 py-1`}
       />
     </div>
   );

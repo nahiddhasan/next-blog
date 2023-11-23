@@ -38,6 +38,31 @@ body {
   }
 }
 
+.zoomin {
+  -webkit-animation: zoomin 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: zoomin 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+@-webkit-keyframes zoomin {
+  0% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomin {
+  0% {
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
 /* hide scroll bar */
 @layer utilities {
   @layer responsive {
@@ -66,7 +91,7 @@ body {
 }
 
 .ql-container {
-  @apply !text-3xl;
+  @apply !text-lg md:!text-3xl;
 }
 
 .quill > .ql-container > .ql-editor.ql-blank::before {

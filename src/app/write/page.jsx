@@ -1,4 +1,5 @@
 "use client";
+import useOutsideClick from "@/hooks/outsideClick";
 import upload from "@/utills/upload";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import {
   CiLink,
   CiVideoOn,
 } from "react-icons/ci";
+import { RxCross2 } from "react-icons/rx";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import Combobox from "./_components/Combobox";
@@ -23,11 +25,19 @@ const Write = () => {
   const [file, setFile] = useState();
   const [submiting, setSubmiting] = useState(false);
 
+  const fileRef = useOutsideClick(() => {
+    setOpen(false);
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !des || !selected) {
-      return alert("Fill all fields");
+    if (!title) {
+      return alert("Title missing");
+    } else if (!selected) {
+      return alert("Category missing");
+    } else if (!des) {
+      return alert("Description missing");
     }
+
     const url = await upload(file);
 
     setSubmiting(true);
@@ -48,13 +58,13 @@ const Write = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1000px] mx-auto mt-6 min-h-[100vh]">
+    <div className="flex flex-col gap-2 p-4 max-w-[1000px] mx-auto mt-6 min-h-[100vh] relative">
       <div className="flex items-center gap-4 w-full">
         <label htmlFor="" className="w-20 text-right text-xl">
-          Title
+          Title:
         </label>
         <input
-          className="text-4xl w-full placeholder:italic bg-transparent border-none focus:outline-none "
+          className="text-2xl md:text-4xl w-full placeholder:italic bg-transparent border-none focus:outline-none "
           type="text"
           placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
@@ -62,19 +72,26 @@ const Write = () => {
       </div>
       <div className="flex items-start gap-4 w-full">
         <label htmlFor="" className="w-20 text-right text-lg pt-2">
-          Category
+          Category:
         </label>
         {/* combobox item  */}
         <Combobox selected={selected} setSelected={setSelected} />
       </div>
       <div className="mx-auto ">
         {file && (
-          <Image
-            src={URL.createObjectURL(file)}
-            height={250}
-            width={300}
-            alt=""
-          />
+          <div className="relative">
+            <Image
+              src={URL.createObjectURL(file)}
+              height={250}
+              width={300}
+              alt=""
+            />
+            <RxCross2
+              size={18}
+              className="cursor-pointer absolute top-1 right-1 rounded-full bg-red-500 hover:bg-red-400 p-1"
+              onClick={() => setFile("")}
+            />
+          </div>
         )}
       </div>
       <div className="flex gap-4 items-end w-full">
@@ -96,7 +113,12 @@ const Write = () => {
           </div>
 
           {open && (
-            <div className="flex items-center gap-4 text-green-600 bg-zinc-900 absolute left-24 z-10">
+            <div
+              ref={fileRef}
+              className={`${
+                open ? "zoomin flex" : "hidden"
+              } flex items-center gap-4 text-green-600 bg-zinc-900 absolute left-24 z-10`}
+            >
               <input
                 type="file"
                 onChange={(e) => setFile(e.target.files[0])}
@@ -120,7 +142,7 @@ const Write = () => {
 
         <ReactQuill
           onFocus={() => setOpen(false)}
-          className={"w-full"}
+          className={"w-full "}
           theme="bubble"
           value={des}
           onChange={setDes}
@@ -129,7 +151,7 @@ const Write = () => {
       </div>
       <button
         disabled={submiting}
-        className="disabled:bg-orange-300 disabled:cursor-not-allowed bg-orange-400 hover:bg-orange-300 rounded-md px-2 p-1 border-none text-black w-max"
+        className="absolute -top-3 right-2 disabled:bg-orange-300 disabled:cursor-not-allowed bg-orange-400 hover:bg-orange-300 rounded-md px-2 p-1 border-none text-black w-max"
         onClick={handleSubmit}
       >
         Publish

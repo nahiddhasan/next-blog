@@ -61,13 +61,22 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
         </div>
       </div>
 
-      {tooltip && (
+      {
         <>
           <div
-            className={`absolute ${
+            className={`${
+              tooltip ? "md:block" : "hidden"
+            } hidden zoomin absolute ${
               top ? "bottom-[125%] left-0" : "left-[100%] right-0"
             } p-4 w-[250px] bg-zinc-800 rounded-md`}
           >
+            <AiFillCaretLeft
+              className={`md:block hidden absolute ${
+                top
+                  ? "-rotate-90 -bottom-[14px] left-8"
+                  : "-left-[14px] top-[50%]"
+              }  text-zinc-800 text-xl`}
+            />
             <div>
               <Link
                 href={`/profile/${userId}`}
@@ -106,15 +115,8 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
               </Link>
             </div>
           </div>
-          <AiFillCaretLeft
-            className={`absolute ${
-              top
-                ? "-rotate-90 left-[50%] bottom-[calc(125%-14px)]"
-                : "right-0 left-[calc(100%-14px)]"
-            }  text-zinc-800 text-xl`}
-          />
         </>
-      )}
+      }
     </div>
   );
 };

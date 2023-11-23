@@ -1,14 +1,13 @@
 "use client";
 import useOutsideClick from "@/hooks/outsideClick";
 import fetcher from "@/utills/fetcher";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { LuChevronsUpDown } from "react-icons/lu";
 import useSWR from "swr";
 
 const Combobox = (props) => {
   const { selected, setSelected } = props;
-  const comboref = useRef();
   const [searchText, setSearchText] = useState(null);
   const [openDropdown, setOpenDropdrown] = useState();
 
@@ -43,7 +42,9 @@ const Combobox = (props) => {
       {openDropdown && (
         <div
           ref={refs}
-          className="w-[200px] max-h-[300px] ring-1 ring-zinc-600 p-2 rounded-md overflow-y-auto"
+          className={`${
+            openDropdown ? "zoomin block" : "hidden"
+          } w-[200px] max-h-[300px] ring-1 ring-zinc-600 p-2 rounded-md overflow-y-auto`}
         >
           <div className="flex items-center">
             <IoSearch size={22} />

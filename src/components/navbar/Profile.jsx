@@ -32,7 +32,9 @@ const Profile = ({ user }) => {
             <>
               <div
                 ref={refs}
-                className={` absolute  z-10 p-4 top-12  right-2  h-max  w-[300px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
+                className={`${
+                  open ? "zoomin block" : "hidden"
+                } absolute  z-10 p-4 top-12  right-2  h-max  w-[300px] bg-zinc-900 ring-1  ring-zinc-700  rounded-md`}
               >
                 {/* user info */}
                 <Link
