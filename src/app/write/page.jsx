@@ -24,7 +24,6 @@ const Write = () => {
   const [des, setDes] = useState("");
   const [selected, setSelected] = useState("");
   const [file, setFile] = useState();
-  const [errorMessege, setErrorMessege] = useState("");
   const [submiting, setSubmiting] = useState(false);
 
   const handleError = () => {

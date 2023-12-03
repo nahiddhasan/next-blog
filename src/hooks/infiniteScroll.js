@@ -1,3 +1,4 @@
+"use client"
 import fetcher from "@/utills/fetcher";
 import useSWRInfinite from "swr/infinite";
 
