@@ -69,19 +69,21 @@ model VerificationToken {
 }
 
 model Post {
-  id        String    @id @default(cuid()) @map("_id")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  title     String
-  des       String
-  img       String?
-  userId    String
-  likes     Like[]
-  user      User      @relation(fields: [userId], references: [id])
-  comments  Comment[]
-  category  Category  @relation(fields: [catSlug], references: [slug])
-  catSlug   String
-  views     Int       @default(0)
+  id          String    @id @default(cuid()) @map("_id")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  title       String
+  des         String
+  img         String?
+  userId      String
+  likes       Like[]
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  category    Category  @relation(fields: [catSlug], references: [slug])
+  catSlug     String
+  views       Int       @default(0)
+  isTranding  Boolean?
+  isEditorPic Boolean?
 }
 
 model Comment {
@@ -89,9 +91,9 @@ model Comment {
   createdAt DateTime @default(now())
   body      String
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   userEmail String
-  user      User     @relation(fields: [userEmail], references: [email])
+  user      User     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 }
 
 model Category {
@@ -107,16 +109,16 @@ model Notifications {
   createdAt DateTime @default(now())
   body      String
   userEmail String
-  user      User     @relation(fields: [userEmail], references: [email])
+  user      User     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 }
 
 model Like {
   id        String   @id @default(cuid()) @map("_id")
   createdAt DateTime @default(now())
   postId    String
-  post      Post     @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Follow {

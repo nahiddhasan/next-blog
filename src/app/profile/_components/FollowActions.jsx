@@ -1,11 +1,12 @@
+"use client";
 const FollowActions = ({ isFollowing, mutateFn, id }) => {
   const handleFollow = async (type) => {
     if (type === "follow") {
-      await fetch(`http://localhost:3000/api/follow?followingId=${id}`, {
+      await fetch(`${NEXT_PUBLIC_BASE_URL}/api/follow?followingId=${id}`, {
         method: "POST",
       });
     } else {
-      await fetch(`http://localhost:3000/api/unfollow?followingId=${id}`, {
+      await fetch(`${NEXT_PUBLIC_BASE_URL}/api/unfollow?followingId=${id}`, {
         method: "DELETE",
       });
     }

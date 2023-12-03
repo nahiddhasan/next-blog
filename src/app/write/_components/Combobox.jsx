@@ -12,7 +12,7 @@ const Combobox = (props) => {
   const [openDropdown, setOpenDropdrown] = useState();
 
   const { data: categories, isLoading } = useSWR(
-    `http://localhost:3000/api/category/cat?q=${searchText}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/cat?q=${searchText}`,
     fetcher
   );
 
@@ -23,6 +23,7 @@ const Combobox = (props) => {
   };
   const handleCategory = (item) => {
     setSelected(item);
+    setSearchText(null);
     setOpenDropdrown(false);
   };
 
@@ -50,26 +51,28 @@ const Combobox = (props) => {
             <IoSearch size={22} />
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search category"
               onChange={onChange}
               className="w-full px-2 p-1 bg-transparent border-none outline-none"
             />
           </div>
           <hr className="border-b border-zinc-700" />
           <div className="flex flex-col mt-2">
-            {isLoading
-              ? "Loading.."
-              : categories?.length
-              ? categories.map((cat) => (
-                  <span
-                    key={cat.id}
-                    onClick={() => handleCategory(cat.title)}
-                    className="hover:bg-zinc-600 rounded-md py-1 px-4"
-                  >
-                    {cat.title}
-                  </span>
-                ))
-              : "not found!"}
+            {isLoading ? (
+              "Loading.."
+            ) : categories?.length ? (
+              categories.map((cat) => (
+                <span
+                  key={cat.id}
+                  onClick={() => handleCategory(cat.title)}
+                  className="hover:bg-zinc-600 rounded-md py-1 px-4"
+                >
+                  {cat.title}
+                </span>
+              ))
+            ) : (
+              <span className="text-center">Nothing found!</span>
+            )}
           </div>
         </div>
       )}

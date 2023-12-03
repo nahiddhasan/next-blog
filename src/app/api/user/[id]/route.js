@@ -4,29 +4,29 @@ import { NextResponse } from "next/server";
 
 export const GET =async(req,{params})=>{
     const {id} = params;
-    const {searchParams} = new URL(req.url)
-    const page = searchParams.get("page")
-    const limit = searchParams.get("limit")
-
+    // const {searchParams} = new URL(req.url)
+    // const page = searchParams.get("page")
+    // const limit = searchParams.get("limit")
+    
     try {
         const user = await prisma.User.findUnique({
             where:{
                 id:id
             },
-            include:{
-                _count: {
-                    select: { posts: true },
-                  },
-                posts:{
-                    take:parseInt(limit),
-                    skip: limit * (page-1),
-                    orderBy: {
-                        createdAt: 'desc'
-                    }
-                },
+            // include:{
+            //     _count: {
+            //         select: { posts: true },
+            //       },
+            //     posts:{
+            //         take:parseInt(limit),
+            //         skip: limit * (page-1),
+            //         orderBy: {
+            //             createdAt: 'desc'
+            //         }
+            //     },
                 
             
-            },
+            // },
 
         })
 

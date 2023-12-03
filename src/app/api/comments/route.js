@@ -4,11 +4,16 @@ import { NextResponse } from "next/server";
 export const GET =async (req)=>{
     const { searchParams } = new URL(req.url);
     const postId = searchParams.get("postId")
+    const page = searchParams.get("page")
+    const limit = searchParams.get("limit")
+    
     try {
         const comments = await prisma.Comment.findMany({
             where:{
                 ...(postId && { postId }),
             },
+            take:parseInt(limit),
+            skip: limit * (page-1),
             include:{
                 user:true,
             },

@@ -1,28 +1,14 @@
-import PaginationCom from "@/components/pagination/PaginationCom";
+import CategoryLoadMore from "@/components/loadMore/CategoryLoadMore";
 import Post from "@/components/post/Post";
-
-const getData = async (slug, q, page, limit) => {
-  const res = await fetch(
-    `http://localhost:3000/api/category/${slug}?q=${q}&page=${page}&limit=${limit}`,
-    {
-      cache: "no-store",
-    }
-  );
-  if (!res.ok) {
-    return "Something went wrong";
-  }
-  return res.json();
-};
+import { CategoryData } from "@/utills/actions";
 
 const Category = async ({ params, searchParams }) => {
   const { slug } = params;
   const q = searchParams?.q || "";
-  const page = parseInt(searchParams?.page || 1);
+  const page = 1;
   const limit = 5;
-  const { posts, count } = await getData(slug, q, page, limit);
+  const { posts, count } = await CategoryData(slug, q, page, limit);
 
-  const hasPrev = limit * (page - 1) > 0;
-  const hasNext = limit * (page - 1) + limit < count;
   return (
     <div className="max-w-[1000px] mx-auto relative h-full">
       <div className="p-4">
@@ -40,9 +26,7 @@ const Category = async ({ params, searchParams }) => {
               <span className="text-xl">No Post Found!</span>
             </div>
           )}
-          {posts.length ? (
-            <PaginationCom page={page} hasPrev={hasPrev} hasNext={hasNext} />
-          ) : null}
+          <CategoryLoadMore q={q} slug={slug} limit={limit} count={count} />
         </div>
       </div>
     </div>

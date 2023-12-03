@@ -1,12 +1,7 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import { BiCategory } from "react-icons/bi";
 
 const SidebarCategories = ({ categories }) => {
-  const [more, setMore] = useState(false);
-
   return (
     <div
       className={`my-4 flex flex-col w-full bg-zinc-900 transition-all duration-1000 overflow-hidden relative`}
@@ -18,7 +13,7 @@ const SidebarCategories = ({ categories }) => {
         {categories.splice(0, 8).map((item) => (
           <Link
             href={`category/${item.slug}`}
-            key={item}
+            key={item.slug}
             className="cursor-pointer px-3 p-1 rounded-full"
             suppressHydrationWarning
           >

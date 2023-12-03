@@ -1,9 +1,12 @@
 import Search from "@/components/navbar/Search";
 import Link from "next/link";
 const getData = async (q) => {
-  const res = await fetch(`http://localhost:3000/api/category?q=${q}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/category?q=${q}`,
+    {
+      cache: "no-store",
+    }
+  );
   if (!res.ok) {
     return "Something went wrong";
   }
@@ -33,7 +36,7 @@ const CategoyList = async ({ searchParams }) => {
                   <Link
                     href={`category/${item.slug}`}
                     key={item}
-                    className="cursor-pointer px-3 p-1 rounded-full"
+                    className="cursor-pointer px-3 p-1 rounded-full hover:bg-opacity-50 hover:text-opacity-75"
                   >
                     {item.title}
                   </Link>

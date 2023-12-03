@@ -13,19 +13,25 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
   const [tooltip, setTooptip] = useState(false);
 
   const { data: follow, mutate: followMutate } = useSWR(
-    `http://localhost:3000/api/follow?followingId=${userId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/follow?followingId=${userId}`,
     fetcher
   );
 
   const handleFollow = async (type) => {
     if (type === "follow") {
-      await fetch(`http://localhost:3000/api/follow?followingId=${userId}`, {
-        method: "POST",
-      });
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/follow?followingId=${userId}`,
+        {
+          method: "POST",
+        }
+      );
     } else {
-      await fetch(`http://localhost:3000/api/unfollow?followingId=${userId}`, {
-        method: "DELETE",
-      });
+      await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/unfollow?followingId=${userId}`,
+        {
+          method: "DELETE",
+        }
+      );
     }
 
     followMutate();
@@ -68,7 +74,7 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
               tooltip ? "md:block" : "hidden"
             } hidden zoomin absolute ${
               top ? "bottom-[125%] left-0" : "left-[100%] right-0"
-            } p-4 w-[250px] bg-zinc-800 rounded-md`}
+            } p-4 w-[250px] bg-zinc-800 rounded-md z-[999]`}
           >
             <AiFillCaretLeft
               className={`md:block hidden absolute ${

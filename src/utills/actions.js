@@ -1,0 +1,55 @@
+"use server"
+export const getCategory = async () => {
+    const res = await fetch(`http://localhost:3000/api/category`, {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      return "Something went wrong";
+    }
+    const data = await res.json()
+    return data;
+  };
+
+  export const getPosts = async (q, cat,page,limit) => {
+  
+    const res = await fetch(
+      `http://localhost:3000/api/posts?q=${q}&cat=${cat}&page=${page}&limit=${limit}`,
+      {
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) {
+      return "Something went wrong";
+    }
+    const data = await res.json()
+    return data;
+  };
+
+  export const trandings = async () => {
+  
+    const res = await fetch(
+      `http://localhost:3000/api/trandings`,
+      {
+        cache: "default",
+      }
+    );
+    if (!res.ok) {
+      return "Something went wrong";
+    }
+    const data = await res.json()
+    return data;
+  };
+
+  export const CategoryData = async (slug, q, page, limit) => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/${slug}?q=${q}&page=${page}&limit=${limit}`,
+      {
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) {
+      return "Something went wrong";
+    }
+    const data = await res.json()
+    return data;
+  };

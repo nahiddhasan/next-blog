@@ -39,13 +39,13 @@ body {
 }
 
 .zoomin {
-  -webkit-animation: zoomin 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  -webkit-animation: zoomin 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: zoomin 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 @-webkit-keyframes zoomin {
   0% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
   }
   100% {
     -webkit-transform: scale(1);
@@ -55,14 +55,15 @@ body {
 
 @keyframes zoomin {
   0% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
   }
   100% {
     -webkit-transform: scale(1);
     transform: scale(1);
   }
 }
+
 /* hide scroll bar */
 @layer utilities {
   @layer responsive {
@@ -81,12 +82,12 @@ body {
 
 .catBg {
   @apply [&>*:nth-child(4n+1)]:bg-[#261536]
-   [&>*:nth-child(4n+1)]:text-[#9162c0]
+[&>*:nth-child(4n+1)]:text-[#9162c0]
     [&>*:nth-child(4n+2)]:bg-rose-800/50
      [&>*:nth-child(4n+2)]:text-rose-300
       [&>*:nth-child(4n+3)]:bg-stone-700/50
        [&>*:nth-child(4n+3)]:text-stone-300
-        [&>*:nth-child(4n+4)]:bg-blue-900/50
+        [&>*:nth-child(4n+4)]:bg-blue-700/30
          [&>*:nth-child(4n+4)]:text-blue-300/70;
 }
 
@@ -96,4 +97,10 @@ body {
 
 .quill > .ql-container > .ql-editor.ql-blank::before {
   @apply text-zinc-400;
+}
+.quill_content pre {
+  @apply bg-zinc-950 w-full p-4 rounded-md m-4 overflow-x-auto;
+}
+.quill_content code {
+  @apply !bg-zinc-700;
 }

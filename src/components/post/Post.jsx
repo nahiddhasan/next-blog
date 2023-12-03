@@ -7,21 +7,21 @@ import UserActions from "./UserActions";
 const Post = ({ post, user }) => {
   return (
     <div className="max-w-[1366px] mx-auto  text-white gap-4 ring-1 ring-zinc-800 p-4 rounded-sm mb-6 hover:shadow-md shadow-zinc-500">
-      {/* user info */}
-      {user && (
-        <User
-          img={user?.image}
-          name={user?.name}
-          bio={user?.bio}
-          userId={user?.id}
-        />
-      )}
       <div className="flex flex-col-reverse md:flex-row justify-between gap-4 my-2">
         {/* content */}
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-between">
+          {/* user info */}
+          {user && (
+            <User
+              img={user?.image}
+              name={user?.name}
+              bio={user?.bio}
+              userId={user?.id}
+            />
+          )}
           <Link
             href={`/singlepost/${post?.id}`}
-            className="flex gap-2 flex-col mb-2"
+            className="flex gap-2 flex-col my-2"
           >
             <h2 className="text-xl font-bold">{post?.title}</h2>
             <div

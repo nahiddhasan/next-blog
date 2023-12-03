@@ -7,7 +7,7 @@ const search = searchParams.get("q");
     try {
         const categories = await prisma.Category.findMany({
             where:{
-                title: {contains: search,mode:"insensitive"},
+                ...(search && {title: {contains: search,mode:"insensitive"}}),
             },
             orderBy: {
                 title: 'asc'

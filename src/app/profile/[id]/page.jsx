@@ -1,9 +1,10 @@
 "use client";
 import Input from "@/components/input/Input";
+import LoadMore from "@/components/loadMore/LoadMore";
 import Loader from "@/components/loader/Loader";
 import Modal from "@/components/modal/Modal";
-import PaginationCom from "@/components/pagination/PaginationCom";
 import Post from "@/components/post/Post";
+import useInfiniteScroll from "@/hooks/infiniteScroll";
 import fetcher from "@/utills/fetcher";
 import upload from "@/utills/upload";
 import { useSession } from "next-auth/react";
@@ -14,8 +15,8 @@ import useSWR from "swr";
 import FollowActions from "../_components/FollowActions";
 const tabs = ["Home", "About"];
 
-const Profile = ({ params, searchParams }) => {
-  const page = parseInt(searchParams?.page || 1);
+const Profile = ({ params }) => {
+  const page = 1;
   const { data: session, status } = useSession();
   const { id } = params;
   const [name, setName] = useState("");
@@ -28,24 +29,28 @@ const Profile = ({ params, searchParams }) => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
-  const limit = 5;
 
   const {
     data: user,
     isLoading,
     mutate,
-  } = useSWR(
-    `http://localhost:3000/api/user/${id}?limit=${limit}&page=${page}`,
-    fetcher
-  );
+  } = useSWR(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/${id}`, fetcher);
+
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?userId=${id}`;
+  const {
+    fetchData: userPosts,
+    isLoadingMore,
+    isReachingEnd,
+    size,
+    setSize,
+    isLoading: postLoading,
+  } = useInfiniteScroll(url);
 
   const { data: follow, mutate: followMutate } = useSWR(
-    `http://localhost:3000/api/follow?followingId=${id}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/follow?followingId=${id}`,
     fetcher
   );
 
-  const hasPrev = limit * (page - 1) > 0;
-  const hasNext = limit * (page - 1) + limit < user?._count.posts;
   useEffect(() => {
     if (!isLoading) {
       setName(user.name);
@@ -73,7 +78,7 @@ const Profile = ({ params, searchParams }) => {
     setSubmiting(true);
     const profileUrl = await upload(profile);
     const coverUrl = await upload(cover);
-    await fetch(`http://localhost:3000/api/user/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         name,
@@ -199,10 +204,17 @@ const Profile = ({ params, searchParams }) => {
           {/* User Posts  */}
           {selectedTab === 0 ? (
             <>
-              {user.posts?.map((post) => (
+              {userPosts?.map((post) => (
                 <Post key={post.id} post={post} />
               ))}
-              <PaginationCom page={page} hasPrev={hasPrev} hasNext={hasNext} />
+              {/* <ProfilePostLoadMore id={id} /> */}
+              <LoadMore
+                isReachingEnd={isReachingEnd}
+                setSize={setSize}
+                size={size}
+                isLoadingMore={isLoadingMore}
+                endNote={"No more Post found!"}
+              />
             </>
           ) : (
             <span className="py-4">{user?.bio}</span>

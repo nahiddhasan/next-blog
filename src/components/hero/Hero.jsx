@@ -12,7 +12,7 @@ const Hero = () => {
   return (
     <div className="h-[calc(50vh-48px)] md:h-[calc(60vh-48px)] lg:h-[calc(90vh-48px)] mx-auto">
       <Swiper
-        className="h-full w-full"
+        className="h-full w-full -z-10"
         modules={[Pagination, Autoplay, EffectFade]}
         slidesPerView={1}
         effect={"fade"}

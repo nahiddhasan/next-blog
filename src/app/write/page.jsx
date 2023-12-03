@@ -15,6 +15,7 @@ import { RxCross2 } from "react-icons/rx";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 import Combobox from "./_components/Combobox";
+import QuillToolbar, { formats, modules } from "./_components/CustomToolbar";
 
 const Write = () => {
   const router = useRouter();
@@ -23,24 +24,32 @@ const Write = () => {
   const [des, setDes] = useState("");
   const [selected, setSelected] = useState("");
   const [file, setFile] = useState();
+  const [errorMessege, setErrorMessege] = useState("");
   const [submiting, setSubmiting] = useState(false);
 
-  const fileRef = useOutsideClick(() => {
-    setOpen(false);
-  });
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleError = () => {
     if (!title) {
-      return alert("Title missing");
+      return alert("Title Missing");
+    } else if (title.length > 120) {
+      return alert("Title can't be large than 120 charecter");
     } else if (!selected) {
       return alert("Category missing");
     } else if (!des) {
       return alert("Description missing");
     }
+  };
+
+  const fileRef = useOutsideClick(() => {
+    setOpen(false);
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    handleError();
+    setSubmiting(true);
 
     const url = await upload(file);
-
-    setSubmiting(true);
     const res = await fetch("/api/posts", {
       method: "POST",
       body: JSON.stringify({
@@ -58,7 +67,10 @@ const Write = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2 p-4 max-w-[1000px] mx-auto mt-6 min-h-[100vh] relative">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-2 p-4 max-w-[1000px] mx-auto mt-6 min-h-[100vh] relative"
+    >
       <div className="flex items-center gap-4 w-full">
         <label htmlFor="" className="w-20 text-right text-xl">
           Title:
@@ -67,6 +79,7 @@ const Write = () => {
           className="text-2xl md:text-4xl w-full placeholder:italic bg-transparent border-none focus:outline-none "
           type="text"
           placeholder="Title"
+          required
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
@@ -77,14 +90,14 @@ const Write = () => {
         {/* combobox item  */}
         <Combobox selected={selected} setSelected={setSelected} />
       </div>
-      <div className="mx-auto ">
+      <div className="mx-auto w-full py-4">
         {file && (
-          <div className="relative">
+          <div className="relative h-[400px] w-full">
             <Image
               src={URL.createObjectURL(file)}
-              height={250}
-              width={300}
+              fill
               alt=""
+              className="object-cover"
             />
             <RxCross2
               size={18}
@@ -125,11 +138,13 @@ const Write = () => {
                 id="img"
                 className="hidden"
               />
-              <button className="h-8 w-8 rounded-full ring-1 ring-green-600 flex items-center justify-center">
-                <label htmlFor="img" className="cursor-pointer">
-                  <CiImageOn size={24} />
-                </label>
-              </button>
+              <label
+                htmlFor="img"
+                className="cursor-pointer h-8 w-8 rounded-full ring-1 ring-green-600 flex items-center justify-center"
+              >
+                <CiImageOn size={24} />
+              </label>
+
               <button className="h-8 w-8 rounded-full ring-1 ring-green-600 flex items-center justify-center">
                 <CiVideoOn size={24} />
               </button>
@@ -139,24 +154,28 @@ const Write = () => {
             </div>
           )}
         </div>
-
-        <ReactQuill
-          onFocus={() => setOpen(false)}
-          className={"w-full "}
-          theme="bubble"
-          value={des}
-          onChange={setDes}
-          placeholder="Tell your story..."
-        />
+        <div className="w-full">
+          <QuillToolbar />
+          <ReactQuill
+            onFocus={() => setOpen(false)}
+            className={"w-full "}
+            theme="bubble"
+            modules={modules}
+            formats={formats}
+            value={des}
+            onChange={setDes}
+            placeholder="Tell your story..."
+          />
+        </div>
       </div>
       <button
-        disabled={submiting}
+        type="submit"
+        disabled={submiting || !title || !des || !selected}
         className="absolute -top-3 right-2 disabled:bg-orange-300 disabled:cursor-not-allowed bg-orange-400 hover:bg-orange-300 rounded-md px-2 p-1 border-none text-black w-max"
-        onClick={handleSubmit}
       >
-        Publish
+        {submiting ? "Publishing..." : "Publish"}
       </button>
-    </div>
+    </form>
   );
 };
 

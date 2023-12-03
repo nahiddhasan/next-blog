@@ -1,55 +1,46 @@
 "use client";
-import fetcher from "@/utills/fetcher";
+import LoadMore from "@/components/loadMore/LoadMore";
+import useInfiniteScroll from "@/hooks/infiniteScroll";
+import useOutsideClick from "@/hooks/outsideClick";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import useSWR from "swr";
 import CommentList from "./CommentList";
 
-const Comments = ({ commentOpen, setCommentOpen, postId }) => {
-  const commentRef = useRef();
+const Comments = ({ commentOpen, setCommentOpen, postId, commentsCount }) => {
+  const { data: session, status } = useSession();
   const [body, setBody] = useState("");
 
-  const { data: session, status } = useSession();
-
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/comments?postId=${postId}`;
   const {
-    data: comments,
+    fetchData: comments,
+    isEmpty,
+    isLoadingMore,
+    isReachingEnd,
     mutate,
+    size,
+    setSize,
     isLoading,
-  } = useSWR(`http://localhost:3000/api/comments?postId=${postId}`, fetcher);
+  } = useInfiniteScroll(url);
 
-  const handleComment = async () => {
+  const handleComment = async (e) => {
+    e.preventDefault();
     if (!body) {
       return;
     }
-    await fetch("http://localhost:3000/api/comments", {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comments`, {
       method: "POST",
       body: JSON.stringify({ body, postId }),
     });
     setBody("");
     mutate();
   };
-
-  const handleClickOutside = (e) => {
-    if (!commentRef.current.contains(e.target)) {
-      setCommentOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    if (commentOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [commentOpen]);
+  const commentRef = useOutsideClick(() => {
+    setCommentOpen(false);
+  });
 
   return (
     <div
@@ -61,7 +52,7 @@ const Comments = ({ commentOpen, setCommentOpen, postId }) => {
       {/* top part  */}
       <div className="flex items-center justify-between">
         <span className="text-lg font-semibold">
-          Total Comments ({comments?.length})
+          Total Comments ({commentsCount})
         </span>
         <RxCrossCircled
           onClick={() => setCommentOpen(false)}
@@ -82,25 +73,29 @@ const Comments = ({ commentOpen, setCommentOpen, postId }) => {
                 className="object-cover cursor-pointer rounded-full"
                 alt="userimg"
               />
-              <div className="flex flex-col">
+              <div className="">
                 <span className="cursor-pointer font-semibold">
                   {session?.user.name}
                 </span>
               </div>
             </div>
-            <ReactTextareaAutosize
-              className="w-full bg-transparent text-sm outline-none resize-none p-2"
-              placeholder="What are You Thoughts?"
-              onChange={(e) => setBody(e.target.value)}
-              value={body}
-            />
+            <form onSubmit={handleComment}>
+              <ReactTextareaAutosize
+                className="w-full bg-transparent text-sm outline-none resize-none p-2"
+                placeholder="What are You Thoughts?"
+                onChange={(e) => setBody(e.target.value)}
+                value={body}
+              />
 
-            <button
-              onClick={handleComment}
-              className="rounded-full px-3 p-1 bg-zinc-900 hover:bg-zinc-800 text-sm text-white"
-            >
-              Comment
-            </button>
+              <button
+                disabled={!body}
+                type="submit"
+                on
+                className="disabled:cursor-not-allowed disabled:bg-zinc-800 rounded-full px-3 p-1 bg-zinc-900 hover:bg-zinc-800 text-sm text-white"
+              >
+                Comment
+              </button>
+            </form>
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center gap-2">
@@ -113,11 +108,21 @@ const Comments = ({ commentOpen, setCommentOpen, postId }) => {
           </div>
         )}
         {/* comment list */}
-        {isLoading
-          ? "Loading..."
-          : comments.map((comment) => (
-              <CommentList key={comment.id} comment={comment} />
-            ))}
+        {isEmpty ? <p className="text-center">No comments found!</p> : null}
+        {comments.map((comment) => (
+          <CommentList
+            key={comment.id}
+            comment={comment}
+            session={session}
+            mutate={mutate}
+          />
+        ))}
+        <LoadMore
+          isReachingEnd={isReachingEnd}
+          setSize={setSize}
+          size={size}
+          isLoadingMore={isLoadingMore}
+        />
       </div>
     </div>
   );

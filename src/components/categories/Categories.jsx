@@ -19,12 +19,12 @@ const Categories = ({ categories }) => {
       catRef.current.scrollLeft += 150;
     }
   };
+
   let isDragging = false;
   let startX;
   let scrollLeft;
   const dragstart = (e) => {
     isDragging = true;
-    e.preventDefault();
     startX = e.pageX || e.touches[0].pageX - catRef.current.offsetLeft;
     scrollLeft = catRef.current.scrollLeft;
   };
@@ -48,7 +48,7 @@ const Categories = ({ categories }) => {
     replace(`${pathName}?${params}`);
   };
   return (
-    <div className="flex items-center gap-4 w-full bg-zinc-900 p-4 md:p-6 lg:p-12 px-4 md:px-14 lg:px-20">
+    <div className="sticky top-[49px] z-30 flex items-center gap-4 w-full bg-zinc-900 p-4 py-6 mb-2">
       <span onClick={() => handleClick("left")}>
         <AiOutlineLeft className="p-2 rounded-full text-2xl bg-zinc-700 text-white cursor-pointer" />
       </span>
@@ -59,7 +59,7 @@ const Categories = ({ categories }) => {
         onMouseUp={draggingStop}
         onTouchStart={dragstart}
         onTouchMove={dragging}
-        className={`catBg scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
+        className={`w-full catBg scroll-smooth select-none flex gap-4 overflow-x-scroll no-scrollbar px-3 py-1 rounded-md`}
       >
         <span
           onClick={handleAll}
@@ -70,7 +70,7 @@ const Categories = ({ categories }) => {
         {categories.map((item) => (
           <span
             onClick={() => handleCatClick(item.title)}
-            key={item}
+            key={item.slug}
             className="cursor-pointer px-3 p-1 rounded-full"
           >
             {item.title}
