@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useRef } from "react";
 
 const useOutsideClick = (callback) => {
@@ -8,17 +7,12 @@ const useOutsideClick = (callback) => {
         callback();
       }
     };
-  
     useEffect(() => {
-      if (typeof document !== 'undefined') {
-        document.addEventListener("click", handleClick);
-    }
+      document.addEventListener("click", handleClick);
       return () => {
-        if (typeof document !== 'undefined') {
-          document.removeEventListener("click", handleClick);
-      }
+        document.removeEventListener("click", handleClick);
       };
-    },[]);
+    });
     return ref;
   };
   export default useOutsideClick;
