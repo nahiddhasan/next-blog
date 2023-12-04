@@ -1,13 +1,7 @@
-"use client";
-
 // Modules object for setting up the Quill editor
 export const modules = {
   toolbar: {
     container: "#toolbar",
-    handlers: {
-      undo: undoChange,
-      redo: redoChange,
-    },
   },
   history: {
     delay: 500,

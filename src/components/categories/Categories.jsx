@@ -1,26 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 
-import { getCategory } from "@/utills/actions";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-const Categories = () => {
+const Categories = ({ categories }) => {
   const searchParams = useSearchParams();
   const pathName = usePathname();
   const { replace } = useRouter();
   const params = new URLSearchParams(searchParams);
   const catRef = useRef();
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const Categories = async () => {
-      const cat = await getCategory();
-      setCategories(cat);
-    };
-    Categories();
-  }, []);
   //navigate left and right
   const handleClick = (type) => {
     if (type === "left") {

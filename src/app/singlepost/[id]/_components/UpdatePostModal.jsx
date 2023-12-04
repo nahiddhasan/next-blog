@@ -6,15 +6,19 @@ import QuillToolbar, {
 } from "@/app/write/_components/CustomToolbar";
 import useOutsideClick from "@/hooks/outsideClick";
 import upload from "@/utills/upload";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdEdit } from "react-icons/md";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.bubble.css";
 
 const UpdatePostModal = ({ setUpdatePostModal, post }) => {
+  const ReactQuill = useMemo(
+    () => dynamic(() => import("react-quill"), { ssr: false }),
+    []
+  );
   const router = useRouter();
   const [selected, setSelected] = useState(post.catSlug);
   const [des, setDes] = useState(post.des);
