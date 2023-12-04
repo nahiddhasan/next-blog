@@ -51,18 +51,18 @@ const MobileNav = ({ user }) => {
         <div
           className={`${
             open ? "sidebar flex" : "hidden"
-          } fixed top-0 left-0 h-screen w-screen bg-zinc-900 items-center justify-center flex-col`}
+          } fixed top-0 left-0 h-screen w-screen bg-zinc-900 items-center justify-center flex-col z-20`}
         >
           {open && (
             <MdClose
-              className="text-2xl text-white fixed top-2 right-6 hover:bg-zinc-500 transition-all rounded-full p-1 z-10"
+              className="text-4xl text-white fixed top-2 right-6 hover:bg-zinc-500 transition-all rounded-full p-1 z-10"
               onClick={() => setOpen(false)}
             />
           )}
 
           <div>
             {/* user info */}
-            <div className="flex items-center gap-4 mb-8">
+            {/* <div className="flex items-center gap-4 mb-8">
               <Image
                 src={user.image || "/img/avatar.png"}
                 height={80}
@@ -76,8 +76,22 @@ const MobileNav = ({ user }) => {
                 </span>
                 <span className="text-zinc-400 text-xl">{user.email}</span>
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-col text-3xl text-zinc-400 gap-4">
+              <Link
+                onClick={() => setOpen(false)}
+                href={`/profile/${user.id}`}
+                className="hover:text-zinc-50 cursor-pointer flex items-center gap-2"
+              >
+                <Image
+                  src={user.image || "/img/avatar.png"}
+                  height={32}
+                  width={32}
+                  alt="Profile"
+                  className="object-cover rounded-full ring-1 ring-yellow-400/20 hover:ring-yellow-400/75 cursor-pointer"
+                />
+                <span>Profile</span>
+              </Link>
               <Link
                 onClick={() => setOpen(false)}
                 href={"/write"}

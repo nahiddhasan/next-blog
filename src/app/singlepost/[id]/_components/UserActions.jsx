@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
+import { FiMoreHorizontal } from "react-icons/fi";
 import useSWR from "swr";
 import Comments from "./Comments";
 
@@ -62,17 +63,6 @@ const UserActions = ({ postId, commentsCount }) => {
           )}
         </div>
 
-        {/* <Link href={!session?.user ? "/login" : ""}>
-          <span className="flex items-center gap-1 cursor-pointer text-lg">
-            {!!data?.isLiked ? (
-              <AiFillLike size={22} onClick={() => handleLike("unlike")} />
-            ) : (
-              <AiOutlineLike size={22} onClick={() => handleLike("like")} />
-            )}{" "}
-            {data?.likes}
-          </span>
-        </Link> */}
-
         <span
           onClick={() => setCommentOpen(!commentOpen)}
           className="flex items-center gap-1 cursor-pointer text-lg"
@@ -81,8 +71,7 @@ const UserActions = ({ postId, commentsCount }) => {
         </span>
       </div>
       <div>
-        {/* update latter */}
-        {/* <FiMoreHorizontal className="text-xl cursor-pointer" /> */}
+        <FiMoreHorizontal className="text-xl cursor-pointer" />
       </div>
 
       {/* comments */}

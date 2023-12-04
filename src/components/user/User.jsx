@@ -42,7 +42,7 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
       onMouseLeave={() => setTooptip(false)}
       className="flex items-center w-max relative pr-4"
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 z-0">
         <Link href={`/profile/${userId}`}>
           <Image
             src={img}

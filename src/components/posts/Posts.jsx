@@ -7,7 +7,7 @@ const Posts = async ({ q, cat }) => {
   const limit = 5;
   const { posts, count } = await getPosts(q, cat, page, limit);
   return (
-    <div>
+    <div className="-z-10">
       {posts?.length ? (
         posts?.map((item) => (
           <Post key={item.id} post={item} user={item.user} />

@@ -8,7 +8,7 @@ const Post = ({ post, user }) => {
   return (
     <div className="max-w-[1366px] mx-auto  text-white gap-4 ring-1 ring-zinc-800 p-4 rounded-sm mb-6 hover:shadow-md shadow-zinc-500">
       {/* content */}
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between ">
         {/* user info */}
         {user && (
           <User

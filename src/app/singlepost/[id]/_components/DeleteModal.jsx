@@ -1,8 +1,10 @@
 "use client";
 
 import useOutsideClick from "@/hooks/outsideClick";
+import { useRouter } from "next/navigation";
 
 const DeleteModal = ({ setDeleteModal, comment, mutate }) => {
+  const router = useRouter();
   const deleteRef = useOutsideClick(() => {
     setDeleteModal(false);
   });
@@ -14,6 +16,7 @@ const DeleteModal = ({ setDeleteModal, comment, mutate }) => {
       }
     );
     mutate();
+    router.refresh();
     setDeleteModal(false);
   };
   return (

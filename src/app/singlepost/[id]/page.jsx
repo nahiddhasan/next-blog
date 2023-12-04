@@ -39,8 +39,6 @@ const SinglePost = async ({ params }) => {
 
         <More post={post} />
       </div>
-      {/* useractions */}
-      <UserActions postId={post.id} commentsCount={post._count.comments} />
       {/* content */}
       <Content img={post.img} desc={post.des} />
       {/* useractions */}

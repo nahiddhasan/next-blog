@@ -5,6 +5,7 @@ import useOutsideClick from "@/hooks/outsideClick";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import ReactTextareaAutosize from "react-textarea-autosize";
@@ -13,7 +14,7 @@ import CommentList from "./CommentList";
 const Comments = ({ commentOpen, setCommentOpen, postId, commentsCount }) => {
   const { data: session, status } = useSession();
   const [body, setBody] = useState("");
-
+  const router = useRouter();
   const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/comments?postId=${postId}`;
   const {
     fetchData: comments,
@@ -37,6 +38,7 @@ const Comments = ({ commentOpen, setCommentOpen, postId, commentsCount }) => {
     });
     setBody("");
     mutate();
+    router.refresh();
   };
   const commentRef = useOutsideClick(() => {
     setCommentOpen(false);
