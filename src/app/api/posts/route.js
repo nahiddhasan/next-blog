@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 export const GET=async(req)=>{
     const {searchParams} = new URL(req.url)
     const userId = searchParams.get("userId")
-
     const cat = searchParams.get("cat")
     const search = searchParams.get("q")
     const page = searchParams.get("page")
     const limit = searchParams.get("limit")
+
     const filters = {
         ...(cat && { catSlug:cat.toLowerCase()}),
         ...(search && { title: {contains: search,mode:"insensitive"} }),

@@ -16,7 +16,7 @@ const CategoyList = async ({ searchParams }) => {
   const q = searchParams?.q || "";
   const categories = await getData(q);
   return (
-    <div className="max-w-[1366px] relative h-full">
+    <div className="max-w-[1366px] mx-auto relative h-full">
       <div className="p-4">
         <h1 className="text-center text-6xl py-8 capitalize font-bold">
           Categories
