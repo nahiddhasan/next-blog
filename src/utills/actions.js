@@ -1,5 +1,6 @@
 "use server"
-export const getCategory = async (q) => {
+export const getCategory = async (q="") => {
+  console.log(q)
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/category?q=${q}`, {
       cache: "no-store",
     });

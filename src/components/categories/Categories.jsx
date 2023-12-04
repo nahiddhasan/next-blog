@@ -13,13 +13,14 @@ const Categories = () => {
   const params = new URLSearchParams(searchParams);
   const catRef = useRef();
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const Categories = async () => {
       const cat = await getCategory();
       setCategories(cat);
     };
     Categories();
-  });
+  }, []);
   //navigate left and right
   const handleClick = (type) => {
     if (type === "left") {
