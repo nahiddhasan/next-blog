@@ -35,7 +35,6 @@ const UserActions = ({ postId, commentsCount }) => {
 
     mutate();
   };
-
   return (
     <div className="flex items-center justify-between p-2 md:p-4 my-3 md:my-6">
       <div className="flex gap-3 items-center">
@@ -44,7 +43,7 @@ const UserActions = ({ postId, commentsCount }) => {
             <Link href={!session?.user ? "/login" : ""}>
               <span className="flex items-center gap-1 cursor-pointer text-lg">
                 <AiOutlineLike size={22} />
-                {data?.likes}
+                {data}
               </span>
             </Link>
           ) : (
@@ -52,7 +51,11 @@ const UserActions = ({ postId, commentsCount }) => {
               {!!data?.isLiked ? (
                 <AiFillLike size={22} onClick={() => handleLike("unlike")} />
               ) : (
-                <AiOutlineLike size={22} onClick={() => handleLike("like")} />
+                <AiOutlineLike
+                  className=""
+                  size={22}
+                  onClick={() => handleLike("like")}
+                />
               )}{" "}
               {data?.likes}
             </span>

@@ -99,7 +99,7 @@ body {
   @apply text-zinc-400;
 }
 .quill_content pre {
-  @apply bg-zinc-950 w-full p-4 rounded-md m-4 overflow-x-auto;
+  @apply bg-zinc-950 p-4 rounded-md m-4 overflow-x-auto;
 }
 .quill_content code {
   @apply !bg-zinc-700;

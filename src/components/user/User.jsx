@@ -74,7 +74,7 @@ const User = ({ img, name, bio, userId, createdAt, top }) => {
               tooltip ? "md:block" : "hidden"
             } hidden zoomin absolute ${
               top ? "bottom-[125%] left-0" : "left-[100%] right-0"
-            } p-4 w-[250px] bg-zinc-800 rounded-md z-[999]`}
+            } p-4 w-[250px] bg-zinc-800 rounded-md z-20`}
           >
             <AiFillCaretLeft
               className={`md:block hidden absolute ${

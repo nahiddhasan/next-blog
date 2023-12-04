@@ -31,7 +31,7 @@ const Hero = () => {
             }}
             className="bg-cover bg-no-repeat"
           >
-            <div className="h-full flex-1 flex justify-center px-10 md:px-16 lg:px-20 bg-gradient-to-b from-transparent to-zinc-900/70">
+            <div className="h-full flex-1 flex justify-center px-6 md:px-16 lg:px-20 bg-gradient-to-b from-transparent to-zinc-900/70">
               <div className="flex-1 flex items-start justify-center flex-col gap-2 md:gap-4 ">
                 <h1 className="font-bold text-[30px] md:text-[60px] lg:text-[80px] bg-gradient-to-r from-yellow-400 to-red-500 bg-clip-text text-transparent">
                   {item.title}

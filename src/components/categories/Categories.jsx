@@ -48,7 +48,7 @@ const Categories = ({ categories }) => {
     replace(`${pathName}?${params}`);
   };
   return (
-    <div className="sticky top-[49px] z-30 flex items-center gap-4 w-full bg-zinc-900 p-4 py-6 mb-2">
+    <div className="sticky top-[49px] flex items-center gap-4 w-full bg-zinc-900 p-4 py-6 mb-2 z-10">
       <span onClick={() => handleClick("left")}>
         <AiOutlineLeft className="p-2 rounded-full text-2xl bg-zinc-700 text-white cursor-pointer" />
       </span>
