@@ -44,7 +44,7 @@ const SinglePost = async ({ params }) => {
       {/* content */}
       <Content img={post.img} desc={post.des} />
       {/* useractions */}
-      <UserActions postId={post.id} commentsCount={post._count.comments} />
+      <UserActions postId={post.id} commentsCount={post?._count?.comments} />
     </div>
   );
 };

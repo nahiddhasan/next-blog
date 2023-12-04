@@ -1,4 +1,5 @@
 import { getAuthSession } from "@/utills/auth";
+import prisma from "@/utills/connect";
 import { NextResponse } from "next/server";
 
 export const GET =async (req)=>{
