@@ -7,7 +7,7 @@ const AuthModal = () => {
   const router = useRouter();
   return (
     <div className="h-screen w-full bg-zinc-800/20 fixed top-0 left-0 z-50 flex items-center justify-center">
-      <div className="h-3/4 w-[450px] bg-zinc-700 rounded-md p-8 flex items-center justify-center relative">
+      <div className="fixed drop-shadow-md top-[50%] left-[50%] max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:w-[90vw] md:max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-md bg-zinc-700 p-8 flex items-center justify-center ">
         <button
           onClick={() => router.back()}
           className="rounded-full hover:bg-zinc-600 h-7 w-7 flex items-center justify-center absolute right-2 top-2"

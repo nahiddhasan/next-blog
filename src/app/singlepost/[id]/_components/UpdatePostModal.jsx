@@ -62,7 +62,7 @@ const UpdatePostModal = ({ setUpdatePostModal, post }) => {
   return (
     <div
       ref={updatePostRef}
-      className={`z-50 h-3/4 w-[90%] md:w-[550px] bg-zinc-700 rounded-md p-8 overflow-auto`}
+      className={`z-50 max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:w-[90vw] md:max-w-[550px] bg-zinc-700 rounded-md px-4 p-8 overflow-auto`}
     >
       <div className="flex items-center justify-between ">
         <h1 className="text-2xl">Update Your Post</h1>

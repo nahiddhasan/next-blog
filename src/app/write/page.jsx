@@ -1,6 +1,7 @@
 "use client";
 import useOutsideClick from "@/hooks/outsideClick";
 import upload from "@/utills/upload";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -18,6 +19,7 @@ import Combobox from "./_components/Combobox";
 import QuillToolbar, { formats, modules } from "./_components/CustomToolbar";
 
 const Write = () => {
+  const { status } = useSession();
   const ReactQuill = useMemo(
     () => dynamic(() => import("react-quill"), { ssr: false }),
     []
@@ -69,6 +71,9 @@ const Write = () => {
     }
   };
 
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
   return (
     <form
       onSubmit={handleSubmit}

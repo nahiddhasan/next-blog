@@ -2,7 +2,6 @@
 import Input from "@/components/input/Input";
 import LoadMore from "@/components/loadMore/LoadMore";
 import Loader from "@/components/loader/Loader";
-import Modal from "@/components/modal/Modal";
 import Post from "@/components/post/Post";
 import useInfiniteScroll from "@/hooks/infiniteScroll";
 import fetcher from "@/utills/fetcher";
@@ -13,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import FollowActions from "../_components/FollowActions";
+import UpdateProfileModal from "../_components/UpdateProfileModal";
 const tabs = ["Home", "About"];
 
 const Profile = ({ params }) => {
@@ -125,7 +125,7 @@ const Profile = ({ params }) => {
       {/* left content  */}
       <div className=" flex-[3] ring-1 ring-zinc-800 p-4 text-white">
         {modalOpen && (
-          <Modal
+          <UpdateProfileModal
             image={user.image}
             coverImg={user.coverImg}
             profile={profile}

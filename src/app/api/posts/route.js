@@ -32,22 +32,21 @@ export const GET=async(req)=>{
 
         }
 
-        const [posts,count] = await prisma.$transaction([
-            prisma.Post.findMany({
-                where:filters,
-                take:parseInt(limit),
-                skip: limit * (page-1),
-                include: {
-                    user: true,
-                },
-                orderBy: {
-                    createdAt: 'desc'
-                }
-            }),
-            prisma.Post.count({
-                where:filters,
-            })
-        ]) 
+        const posts = await prisma.Post.findMany({
+                    where:filters,
+                    take:parseInt(limit),
+                    skip: limit * (page-1),
+                    include: {
+                        user: true,
+                    },
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                })
+        const count = await prisma.Post.count({
+            where:filters
+        })
+
          return new NextResponse(JSON.stringify({posts,count},{status:200}))
 
     } catch (error) {

@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 
-const Modal = ({
+const UpdateProfileModal = ({
   onClose,
   image,
   coverImg,
@@ -22,10 +22,9 @@ const Modal = ({
     }
     onSubmit();
   }, [onSubmit, disabled]);
-
   return (
     <div className="h-screen w-full bg-zinc-800/20 fixed top-0 left-0 z-50 flex items-center justify-center">
-      <div className="h-3/4 w-[90%] md:w-[550px] bg-zinc-700 rounded-md p-8 overflow-auto">
+      <div className="max-h-full h-full md:h-auto md:max-h-[85vh] w-full md:w-[90vw] md:max-w-[550px] bg-zinc-700 rounded-md p-8 overflow-auto">
         <div className="flex items-center justify-between ">
           <h1 className="text-2xl">Profile Information</h1>
           <button
@@ -112,4 +111,4 @@ const Modal = ({
   );
 };
 
-export default Modal;
+export default UpdateProfileModal;

@@ -6,6 +6,7 @@ const Posts = async ({ q, cat }) => {
   const page = 1;
   const limit = 5;
   const { posts, count } = await getPosts(q, cat, page, limit);
+
   return (
     <div className="-z-10">
       {posts?.length ? (

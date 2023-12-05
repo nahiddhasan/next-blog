@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 
+import Link from "next/link";
 import User from "../user/User";
 import UserActions from "./UserActions";
 
@@ -20,6 +20,7 @@ const Post = ({ post, user }) => {
         )}
         {/* post content  */}
         <Link
+          suppressHydrationWarning
           href={`/singlepost/${post?.id}`}
           className="flex flex-col md:flex-row justify-between gap-4 my-2 "
         >
